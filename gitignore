@@ -9,3 +9,11 @@ tags
 tmp/**/*
 !tmp/cache/.keep
 zeus.json
+.swo
+*.scratch.*
+vim/.netrwhist
+*~
+.rvmrc
+.DS_Store
+.yardoc
+tmp
