@@ -40,7 +40,8 @@
 [user]
   name  = Ariel Zavala
   email = arielo.zavala@gmail.com
-
+[branch]
+  autosetuprebase = always
 [branch "master"]
   rebase = true
 [remote "origin"]
