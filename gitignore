@@ -17,3 +17,4 @@ vim/.netrwhist
 .DS_Store
 .yardoc
 tmp
+.eyrc
