@@ -36,6 +36,8 @@
   unfuck = reset --hard HEAD
   cob = checkout -b
   rmb = !sh -c 'git branch -D $1 && git push origin :$1' -
+  start = flow feature start
+  end = flow feature finish 
 
 [user]
   name  = Ariel Zavala
