@@ -1,4 +1,17 @@
-# Unix
+alias rall="git branch | grep feature | sed 's/\(.*\)\/\(.*\)/git flow feature rebase \2/g' | sh"
+alias rebuild="bundle exec rake db:drop && bundle exec rake db:create && bundle exec rake db:schema:load && bundle exec rake db:seed"
+alias migrate="bundle exec rake db:migrate db:test:prepare"
+alias remigrate="bundle exec rake db:migrate && bundle exec rake db:migrate:redo && bundle exec rake db:schema:dump db:test:prepare"
+alias remongrate="bundle exec rake mongoid:migrate && bundle exec rake mongoid:migrate:redo"
+alias g="git"
+alias s="bundle exec rspec --format=documentation"
+alias t="ruby -Itest -iruby-debug"
+alias cuc="bundle exec cucumber --format=pretty"
+alias gadd="git add -u && git add . && git status"
+alias cadd="git add -u && git add . && git commit -v"
+alias gi="gem install"
+alias gci="git pull --rebase && bundle exec rake && git push"
+alias giv="gem install -v"
 alias tlf="tail -f"
 alias ln='ln -v'
 alias mkdir='mkdir -p'
@@ -23,6 +36,9 @@ alias b="bundle"
 alias t="ruby -I test"
 alias cuc="bundle exec cucumber"
 
+alias bake='bundle exec rake'
+
+alias postgres.start='/usr/local/Cellar/postgresql/9.0.1/bin/postgres -D /usr/local/var/postgres -r /usr/local/var/postgres/server.log'
 # Rubygems
 alias gi="gem install"
 alias giv="gem install -v"
