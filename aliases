@@ -39,16 +39,4 @@ alias cuc="bundle exec cucumber"
 alias bake='bundle exec rake'
 
 alias postgres.start='/usr/local/Cellar/postgresql/9.0.1/bin/postgres -D /usr/local/var/postgres -r /usr/local/var/postgres/server.log'
-# Rubygems
-alias gi="gem install"
-alias giv="gem install -v"
-
-# Rails
-alias migrate="rake db:migrate db:rollback && rake db:migrate db:test:prepare"
-alias m="migrate"
-alias rk="rake"
-alias s="rspec"
-alias z="zeus"
-
-# Include custom aliases
-[[ -f ~/.aliases.local ]] && source ~/.aliases.local
+alias ku='ps -ax | grep unicorn | cut -d ' ' -f 1 | xargs sudo kill -9'
