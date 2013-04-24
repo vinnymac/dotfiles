@@ -46,6 +46,11 @@ setopt extendedglob
 # Allow [ or ] whereever you want
 unsetopt nomatch
 
+# aws
+if [ -e "$HOME/.aws" ]; then
+  source "$HOME/.aws"
+fi
+
 # vi mode
 bindkey -v
 bindkey "^F" vi-cmd-mode
