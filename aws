@@ -12,3 +12,4 @@ export AWS_CREDENTIAL_FILE=~/.ec2/aws_credential_file
 export AWS_CLOUDWATCH_HOME="/usr/local/Library/LinkedKegs/cloud-watch/jars"
 export SERVICE_HOME="$AWS_CLOUDWATCH_HOME"
 export AWS_ELB_HOME="/usr/local/Library/LinkedKegs/elb-tools/jars"
+export AWS_RDS_HOME="/usr/local/Cellar/rds-command-line-tools/1.12.002/libexec"

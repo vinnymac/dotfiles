@@ -38,5 +38,5 @@ alias cuc="bundle exec cucumber"
 
 alias bake='bundle exec rake'
 
-alias postgres.start='/usr/local/Cellar/postgresql/9.0.1/bin/postgres -D /usr/local/var/postgres -r /usr/local/var/postgres/server.log'
 alias ku='ps -ax | grep unicorn | cut -d ' ' -f 1 | xargs sudo kill -9'
+alias postgres.start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'

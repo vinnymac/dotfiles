@@ -91,7 +91,7 @@ export dirstacksize=5
 cdpath=(. ~/code/thoughtbot/ ~/code/play/ ~/code/src/)
 typeset -gU cdpath
 
-PATH=~/bin:~/bin/scripts:/usr/local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/Cellar/python/2.7/bin:$PATH
+PATH=~/bin:~/bin/scripts:/usr/local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/Cellar/python/2.7/bin:/usr/local/share/npm/bin:$PATH
 
 if [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then source "$HOME/.rvm/scripts/rvm" ; fi
 
