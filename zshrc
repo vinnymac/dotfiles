@@ -46,6 +46,11 @@ setopt extendedglob
 # Allow [ or ] whereever you want
 unsetopt nomatch
 
+# exports
+if [ -e "$HOME/.exports" ]; then
+  source "$HOME/.exports"
+fi
+
 # aws
 if [ -e "$HOME/.aws" ]; then
   source "$HOME/.aws"
