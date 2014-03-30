@@ -100,6 +100,9 @@ PATH=~/bin:~/bin/scripts:/usr/local/bin:/usr/local/bin:/usr/local/sbin:/usr/loca
 
 if [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then source "$HOME/.rvm/scripts/rvm" ; fi
 
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
 # awesome cd movements from zshkit
 setopt AUTOCD
 setopt AUTOPUSHD PUSHDMINUS PUSHDSILENT PUSHDTOHOME
@@ -107,9 +110,6 @@ setopt cdablevars
 
 # Enable extended globbing
 setopt EXTENDED_GLOB
-
-# load in aliases
-source ~/.zshenv
 
 # awesome completion from zshkit
 zstyle ':completion:*' completer _expand _complete
@@ -159,3 +159,5 @@ zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 # reload completion
 autoload -Uz compinit
 compinit
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
