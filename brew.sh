@@ -97,6 +97,7 @@ brew install ssh-copy-id
 brew install tree
 brew install vbindiff
 brew install zopfli
+brew install htop
 
 # Install Caskroom
 brew tap caskroom/cask
