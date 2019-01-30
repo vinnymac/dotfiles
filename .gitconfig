@@ -42,6 +42,7 @@
   rmb = !sh -c 'git branch -D $1 && git push origin :$1' -
   start = flow feature start
   end = flow feature finish
+  rh = reset --hard origin/$(current_branch)
 [user]
 	name = Vincent Taverna
 	email = vinny@getlua.com
