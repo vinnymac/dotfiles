@@ -121,6 +121,7 @@ apps=(
   slack
   sourcetree
   sublime-text3
+  transmission
   virtualbox
   visual-studio-code
   vlc
