@@ -1,0 +1,120 @@
+"*":
+  aligner:
+    ":-alignment": "left"
+    ":-leftSpace": true
+  "atom-beautify":
+    general:
+      _analyticsUserId: "92d28c62-4a67-4430-9517-ba82692fc5b1"
+  "atom-material-ui":
+    colors:
+      abaseColor: "#2196f3"
+      predefinedColor: "Blue"
+    fonts:
+      fontSize: 11
+    tabs:
+      compactTabs: true
+      tintedTabBar: true
+    treeView:
+      blendTabs: true
+      compactList: true
+    ui:
+      panelContrast: true
+      panelShadows: true
+  "atom-package-deps":
+    ignored: []
+  "autocomplete-modules":
+    babelPluginModuleResolver: true
+    vendors: [
+      "node_modules"
+      "kana/node_modules"
+    ]
+    webpack: true
+    webpackConfigFilename: "kana/gulpfile.js/webpack.config.js"
+  core:
+    customFileTypes:
+      "source.graphql": [
+        "gql"
+      ]
+      "source.ini": [
+        ".buckconfig"
+        ".flowconfig"
+        ".hgrc"
+      ]
+      "source.json": [
+        ".arcconfig"
+        "BUCK.autodeps"
+      ]
+      "source.python": [
+        "BUCK"
+      ]
+    disabledPackages: [
+      "TinyRave"
+      "autocomplete-elixir"
+      "linter-js-standard"
+      "react"
+      "nuclide"
+      "fonts"
+      "aligner"
+      "atom-typescript"
+    ]
+    telemetryConsent: "limited"
+    themes: [
+      "atom-material-ui"
+      "atom-material-syntax"
+    ]
+  editor:
+    fontFamily: "Consolas"
+    fontSize: 13
+    invisibles: {}
+    showIndentGuide: true
+    showInvisibles: true
+  "exception-reporting":
+    userId: "7d292a0b-3529-192f-bad2-b929f903043a"
+  "file-watcher":
+    promptWhenFileHasChangedOnDisk: false
+  fonts:
+    fontFamily: "DejaVu Mono"
+  "git-log": {}
+  "language-babel":
+    autoIndentJSX: true
+  linter:
+    lintOnChangeInterval: 30000
+  "linter-ui-default":
+    hidePanelWhenEmpty: true
+    panelHeight: 81
+  "merge-conflicts": {}
+  minimap: {}
+  nuclide:
+    "nuclide-flow":
+      pathToFlow: "/Users/vinnymac/Sites/vagrant/webapp/kana/node_modules/flow-bin/flow-osx-v0.45.0/flow"
+    "nuclide-home":
+      showHome: false
+    "nuclide-working-sets":
+      workingSets: [
+        {
+          active: true
+          name: "Lua"
+          uris: [
+            "/Users/vinnymac/Sites/vagrant/kopejs"
+            "/Users/vinnymac/Sites/vagrant/malihini"
+            "/Users/vinnymac/Sites/vagrant/mana"
+            "/Users/vinnymac/Sites/vagrant/ohana"
+            "/Users/vinnymac/Sites/vagrant/webapp"
+          ]
+        }
+      ]
+  pigments: {}
+  "prettier-atom":
+    formatOnSaveOptions: {}
+    prettierOptions:
+      semi: false
+    useEslint: true
+  "travis-ci-status":
+    personalAccessToken: "ddf1a408b259107aefefe861995c008cadf8f2f5"
+  "tree-view":
+    hideVcsIgnoredFiles: true
+  welcome:
+    showOnStartup: false
+".js.jsx.source":
+  editor:
+    preferredLineLength: 160

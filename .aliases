@@ -1,0 +1,31 @@
+alias grep="grep -i"
+alias which='type -all'                                                     # which:        Find executables
+alias f='open -a Finder ./'                                                 # f:            Opens current directory in MacOS Finder
+alias c='clear'                                                             # c:            Clear terminal display
+alias less='less -FSRXc'                                                    # Preferred 'less' implementation
+alias ll='ls -FGlAhp'                                                       # Preferred 'ls' implementation
+alias l="ls -aeGhlOF@"
+alias ls="ls -aGF"
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+# add support for ctrl+o to open selected file
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(atom {})+abort'"
+
+# Navigation
+alias ~="cd ~"                                                              # ~:            Go Home
+alias cd..='cd ../'                                                         # Go back 1 directory level (for fast typers)
+alias ..='cd ../'                                                           # Go back 1 directory level
+alias ...='cd ../../'                                                       # Go back 2 directory levels
+alias .3='cd ../../../'                                                     # Go back 3 directory levels
+alias .4='cd ../../../../'                                                  # Go back 4 directory levels
+alias .5='cd ../../../../../'                                               # Go back 5 directory levels
+alias .6='cd ../../../../../../'                                            # Go back 6 directory levels
+
+# Helpful additions and overrides
+mcd () { mkdir -p "$1" && cd "$1"; }                                        # mcd:          Makes new Dir and jumps inside
+trash () { command mv "$@" ~/.Trash ; }                                     # trash:        Moves a file to the MacOS trash
+ql () { qlmanage -p "$*" >& /dev/null; }                                    # ql:           Opens any file in MacOS Quicklook Preview
+cd() { builtin cd "$@"; ll; }                                               # Always list directory contents upon 'cd'
+
+pidport() {
+  lsof -n -i4TCP:$1 | grep LISTEN;
+}

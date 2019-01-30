@@ -1,0 +1,211 @@
+# Your snippets
+#
+# Atom snippets allow you to enter a simple prefix in the editor and hit tab to
+# expand the prefix into a larger code block with templated values.
+#
+# You can create a new snippet in this file by typing "snip" and then hitting
+# tab.
+#
+# An example CoffeeScript snippet to expand log to console.log:
+#
+# '.source.coffee':
+#   'Console log':
+#     'prefix': 'log'
+#     'body': 'console.log $1'
+#
+# Each scope (e.g. '.source.coffee' above) can only be declared once.
+#
+# This file uses CoffeeScript Object Notation (CSON).
+# If you are unfamiliar with CSON, you can read more about it in the
+# Atom Flight Manual:
+# https://atom.io/docs/latest/using-atom-basic-customization#cson
+'.source.js':
+  'PropTypes Import':
+    'prefix': 'ac-pt'
+    'body': "import PropTypes from 'prop-types'"
+  'Connect Redux Import':
+    'prefix': 'ac-cnt'
+    'body': "import { connect } from 'react-redux'"
+  'Map State to Props':
+    'prefix': 'ac-mstp'
+    'body': """
+      const mapStateToProps = state => ({
+        key: state.reducerState.key,
+      })
+    """
+  'Map Dispatch to Props':
+    'prefix': 'ac-mdtp'
+    'body': """
+      const mapDispatchToProps = {
+        action: actions.action,
+      }
+    """
+  'React Boilerplate for Higher Order Component':
+    'prefix': 'reacthoc'
+    'body':"""
+      import React, { Component } from 'react'
+      import PropTypes from 'prop-types'
+
+      export default (C, X) => class extends Component {
+        static displayName = `withPoller(${C.displayName || C.name || ''})`
+
+        static propTypes = {
+          // Allows us to access the ref of 'C' if necessary
+          nodeRef: PropTypes.func,
+        }
+
+        componentDidMount() {
+        }
+
+        componentWillReceiveProps(nextProps) {
+        }
+
+        componentWillUnmount() {
+        }
+
+        render() { return <C {...this.props} ref={this.props.nodeRef} /> }
+      }
+    """
+  'React Boilerplate for Babel with Component Class':
+    'prefix': 'reactcomponent'
+    'body':"""
+      import React, { Component } from 'react'
+      import PropTypes from 'prop-types'
+      import classnames from 'classnames'
+
+      class XYZ extends Component {
+        static displayName = ''
+
+        static propTypes = {
+
+        }
+
+        componentWillMount() {
+
+        }
+
+        componentDidMount() {
+
+        }
+
+        componentDidUpdate() {
+
+        }
+
+        componentWillUnmount() {
+
+        }
+
+        render() {
+          const {
+
+          } = this.props
+
+          return (
+            <div>
+            </div>
+          )
+        }
+      }
+
+      export default XYZ
+    """
+  'React Boilerplate for Babel':
+    'prefix': 'reactboil'
+    'body':"""
+      /* global Lua */
+      import $ from 'jquery'
+      import _ from 'underscore'
+      import React from 'react'
+      import PropTypes from 'prop-types'
+
+      const XYZ = React.createClass({
+        displayName: 'XYZ',
+
+        propTypes: {
+        },
+
+        componentDidMount() {
+        },
+
+        componentWillUnmount() {
+        },
+
+        render() {
+          const {
+          } = this.props
+
+          return (
+            <div>
+            </div>
+          )
+        },
+      })
+
+      export default XYZ
+    """
+'.source.coffee':
+  'TinyRave Midi':
+    'prefix': "midi"
+    'body': """
+      require('v1/midi')
+
+      transport =
+
+      parts =
+
+      buildTrack = parseMidi(parts: parts, transport: transport)
+
+    """
+  'Should Component Update':
+    'prefix': 'shouldComponentUpdate'
+    'body': 'shouldComponentUpdate: (nextProps, nextState) ->'
+  'React Clear Component':
+    'prefix': 'reactclear'
+    'body': '<div className = "clear" />'
+  'React Boilerplate for Functional Component':
+    'prefix': 'reactfunc'
+    'body':"""
+      import React from 'react'
+      import PropTypes from 'prop-types'
+
+      function Component() {
+        return (
+          <div>
+          </div>
+        )
+      }
+
+      Component.propTypes = {
+
+      }
+
+      export default Component
+    """
+  'Redux Saga Request':
+    'prefix': 'reduxsagarequest'
+    'body':"""
+      import { takeLatest, call, put } from 'redux-saga/effects'
+
+      import { updateAction } from 'actions/action'
+      import request, { routes } from 'api/request'
+
+      const updateActionRequest = data => request.put(routes.route, data)
+
+      function* updateActionSaga({ payload: { resolve, reject, attributes } }) {
+        try {
+          const response = yield call(updateActionRequest, attributes)
+          const { data } = response
+          yield put(updateAction.success(data))
+          if (resolve) yield call(resolve, data)
+          return data
+        } catch (e) {
+          yield put(updateAction.failure(e))
+          if (reject) yield call(reject, e)
+        }
+      }
+
+      export default function*() {
+        yield takeLatest(updateAction.request, updateActionSaga)
+      }
+    """
