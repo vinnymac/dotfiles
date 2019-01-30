@@ -37,6 +37,8 @@ installSoftware() {
   /bin/bash ./brew.sh;
   /bin/bash ./aws.sh;
   /bin/bash ./npm.sh;
+  /bin/bash ./android.sh;
+  /bin/bash ./xcode.sh;
 }
 
 installAsdf() {
