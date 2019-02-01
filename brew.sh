@@ -100,6 +100,8 @@ brew install zopfli
 brew install htop
 
 # Install Caskroom
+brew uninstall brew-cask
+brew untap caskroom/cask
 brew tap caskroom/cask
 brew install brew-cask
 brew tap caskroom/versions
