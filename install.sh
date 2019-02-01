@@ -61,6 +61,8 @@ installAsdf() {
   asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git;
   asdf plugin-add terraform https://github.com/Banno/asdf-hashicorp.git;
   asdf plugin-add packer https://github.com/Banno/asdf-hashicorp.git;
+
+  asdf install
 }
 
 syncConfig() {
