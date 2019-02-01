@@ -78,15 +78,15 @@ syncConfig() {
 }
 
 macOsConfig() {
-  /bin/bash ~/.macos;
+  /bin/bash ./.macos;
 }
 
 doIt() {
   installBrew;
   updateBrew;
 
-  installSoftware;
   installAsdf;
+  installSoftware;
   syncConfig;
   macOsConfig;
 }

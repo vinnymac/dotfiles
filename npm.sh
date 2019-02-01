@@ -9,4 +9,6 @@ packages=(
   gh-pages
 )
 
+# check for npm, if it is missing, install nodejs
+
 npm install -g "${packages[@]}"

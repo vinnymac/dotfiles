@@ -108,7 +108,6 @@ brew tap caskroom/versions
 apps=(
   atom
   docker
-  filezilla
   firefox
   firefox-nightly
   google-chrome
