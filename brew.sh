@@ -43,7 +43,8 @@ brew install gnupg
 # Install more recent versions of some macOS tools.
 brew install vim --with-override-system-vi
 brew install grep
-brew install openssh
+# Uncomment this for linux
+# brew install openssh
 brew install screen
 brew install php
 brew install gmp
@@ -98,6 +99,7 @@ brew install tree
 brew install vbindiff
 brew install zopfli
 brew install htop
+brew install ansible
 
 # Install Caskroom
 brew uninstall brew-cask
@@ -122,6 +124,7 @@ apps=(
   slack
   sourcetree
   transmission
+  vagrant
   virtualbox
   visual-studio-code
   vlc
