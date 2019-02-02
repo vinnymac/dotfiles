@@ -63,6 +63,7 @@ installAsdf() {
   asdf plugin-add packer https://github.com/Banno/asdf-hashicorp.git;
 
   asdf install
+  asdf reshim nodejs
 }
 
 syncConfig() {
