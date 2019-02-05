@@ -20,9 +20,9 @@ if [ -f ~/.git-completion.bash ]; then
   __git_complete gc _git_checkout
 fi
 
-export PATH="/usr/local/sbin:$PATH"
-export PATH="$PATH:$(yarn global dir)/node_modules/.bin"
-
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
+
 export PATH="/usr/local/opt/openssl/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="$PATH:$(yarn global dir)/node_modules/.bin"
