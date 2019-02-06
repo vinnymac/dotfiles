@@ -100,6 +100,7 @@ brew install vbindiff
 brew install zopfli
 brew install htop
 brew install ansible
+brew install diff-so-fancy
 
 # Install Caskroom
 brew uninstall brew-cask

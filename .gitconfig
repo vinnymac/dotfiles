@@ -55,8 +55,8 @@
 [core]
 	commentchar = auto
 	excludesfile = /Users/vinnymac/.gitignore_global
-	pager = diff-highlight | diff-so-fancy | less --tabs=1,5 -RFX
-	show = diff-hightlight | diff-so-fancy | less --tabs=1,5 -RFX
+	pager = /usr/local/opt/git/share/git-core/contrib/diff-highlight/diff-highlight | diff-so-fancy | less --tabs=1,5 -RFX
+	show = /usr/local/opt/git/share/git-core/contrib/diff-highlight/diff-highlight | diff-so-fancy | less --tabs=1,5 -RFX
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path =
