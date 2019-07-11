@@ -12,3 +12,10 @@ packages=(
 # check for npm, if it is missing, install nodejs
 
 npm install -g "${packages[@]}"
+
+# Install YVM
+curl -s https://raw.githubusercontent.com/tophat/yvm/master/scripts/install.js | node
+# Setup YVM
+source ~/.yvm/yvm.sh
+# Install yarn
+yarn
