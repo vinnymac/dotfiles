@@ -73,6 +73,7 @@ syncConfig() {
     --exclude ".DS_Store" \
     --exclude ".macos" \
     --exclude "README.md" \
+    --exclude "LICENSE.md" \
     --exclude "npm.sh" \
     --exclude "brew.sh" \
     --exclude "install.sh" \
