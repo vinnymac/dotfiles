@@ -137,9 +137,9 @@ for app in "${apps[@]}"; do brew cask install --appdir="/Applications" "$app"; d
 brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv webpquicklook suspicious-package && qlmanage -r
 
 # VS Code Symlinks
+mkdir -p ~/Library/Application\ Support/Code/User/
 ln -s ./.code/settings.json ~/Library/Application\ Support/Code/User/settings.json
 ln -s ./.code/keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
-ln -s ./.code/snippets/ ~/Library/Application\ Support/Code/User/snippets
 
 # Remove outdated versions from the cellar.
 brew cleanup
