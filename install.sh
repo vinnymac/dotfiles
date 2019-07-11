@@ -77,6 +77,8 @@ syncConfig() {
     --exclude "brew.sh" \
     --exclude "install.sh" \
     --exclude "aws.sh" \
+    --exclude "xcode.sh" \
+    --exclude "android.sh" \
     -avh --no-perms . ~;
 }
 
