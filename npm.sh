@@ -16,6 +16,6 @@ npm install -g "${packages[@]}"
 # Install YVM
 curl -s https://raw.githubusercontent.com/tophat/yvm/master/scripts/install.js | node
 # Setup YVM
-source ~/.yvm/yvm.sh
+node $HOME/.yvm/yvm.js configure-shell
 # Install yarn
 yarn
