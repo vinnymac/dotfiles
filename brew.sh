@@ -131,7 +131,7 @@ apps=(
   vlc
 )
 
-for app in "${apps[@]}"}; do brew cask install --appdir="/Applications" "$app"; done
+for app in "${apps[@]}"; do brew cask install --appdir="/Applications" "$app"; done
 
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
 brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv webpquicklook suspicious-package && qlmanage -r
