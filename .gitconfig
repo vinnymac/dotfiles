@@ -44,6 +44,7 @@
   start = flow feature start
   end = flow feature finish
   rh = reset --hard origin/$(current_branch)
+  plas = pull --autostash
 [user]
 	name = Vincent Taverna
 	email = vinny@getlua.com
