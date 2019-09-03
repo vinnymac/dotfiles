@@ -9,8 +9,8 @@ alias ls="ls -aGF"
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 # add support for ctrl+o to open selected file
 export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(atom {})+abort'"
-export llrg="find . -type f -printf "%s\t%p\n" | sort -n | tail -1"
-export lsml="find . -type f -printf "%s\t%p\n" | sort -nr | tail -1"
+alias llrg="find . -type f -printf "%s\t%p\n" | sort -n | tail -1"
+alias lsml="find . -type f -printf "%s\t%p\n" | sort -nr | tail -1"
 
 # Navigation
 alias ~="cd ~"                                                              # ~:            Go Home
