@@ -10,7 +10,9 @@
   ca = commit --amend
   ci = commit -v
   co = checkout
+  su =  !git branch --set-upstream-to=origin/$(git rev-parse --abbrev-ref HEAD) $(git rev-parse --abbrev-ref HEAD)
   dlm = !git branch --merged | sed '/^** *develop$/d' | sed '/^** *master$/d' | xargs git branch -d
+  drm = !git checkout master && git branch -r --merged | grep -v master | sed \"s/origin\\///\" | xargs -n 1 git push --delete origin
   create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
   delete-branch = !sh -c 'git push origin :refs/heads/$1 && git remote prune origin && git branch -D $1' -
   merge-branch = !git checkout master && git merge @{-1}
@@ -18,7 +20,7 @@
   ob = branch --sort=committerdate
   pr = !hub pull-request
   c = commit -m
-  co = checkout
+  cn = commit -nm
   a = add
   aa= !git add -u && git add . && git status
   di = diff
@@ -43,11 +45,11 @@
   rmb = !sh -c 'git branch -D $1 && git push origin :$1' -
   start = flow feature start
   end = flow feature finish
-  rh = reset --hard origin/$(current_branch)
+  rh = reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
   plas = pull --autostash
 [user]
 	name = Vincent Taverna
-	email = vinny@getlua.com
+	email = vinnymac@gmail.com
 [branch]
   autosetuprebase = always
 [branch "master"]
@@ -57,8 +59,8 @@
 [core]
 	commentchar = auto
 	excludesfile = /Users/vinnymac/.gitignore_global
-	pager = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | diff-so-fancy | less --tabs=1,5 -RFX
-	show = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | diff-so-fancy | less --tabs=1,5 -RFX
+	pager = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | diff-so-fancy | less --tabs=1,5 -RSFX
+	show = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | diff-so-fancy | less --tabs=1,5 -RSFX
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path =
@@ -76,3 +78,6 @@
 	template = /Users/vinnymac/.stCommitMsg
 [github]
 	user = vinnymac
+[merge "npm-merge-driver"]
+	name = automatically merge npm lockfiles
+	driver = npx npm-merge-driver merge %A %O %B %P
