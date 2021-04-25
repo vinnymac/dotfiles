@@ -47,6 +47,7 @@
   end = flow feature finish
   rh = reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
   plas = pull --autostash
+  br = branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
 [user]
 	name = Vincent Taverna
 	email = vinnymac@gmail.com
