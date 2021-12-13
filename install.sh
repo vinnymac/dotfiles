@@ -37,7 +37,7 @@ updateBrew() {
 
 installSoftware() {
   /bin/bash ./brew.sh;
-  /bin/bash ./aws.sh;
+  /bin/bash ./aws2.sh;
   /bin/bash ./npm.sh;
   /bin/bash ./android.sh;
   /bin/bash ./xcode.sh;
@@ -80,6 +80,7 @@ syncConfig() {
     --exclude "brew.sh" \
     --exclude "install.sh" \
     --exclude "aws.sh" \
+    --exclude "aws2.sh" \
     --exclude "xcode.sh" \
     --exclude "android.sh" \
     -avh --no-perms . ~;

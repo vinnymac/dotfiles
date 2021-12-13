@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# DEPRECATED V1 AWS CLI Script
 # ~/aws.sh
 
 # Removed user's cached credentials
