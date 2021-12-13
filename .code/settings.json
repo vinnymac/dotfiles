@@ -1,7 +1,7 @@
 // Place your settings in this file to overwrite the default settings
 {
   "files.trimTrailingWhitespace": true,
-"window.zoomLevel": 1,
+  "window.zoomLevel": 1,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "atomKeymap.promptV3Features": true,
   "editor.multiCursorModifier": "ctrlCmd",
