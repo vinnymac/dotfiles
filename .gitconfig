@@ -60,8 +60,8 @@
 [core]
 	commentchar = auto
 	excludesfile = /Users/vinnymac/.gitignore_global
-	pager = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | diff-so-fancy | less --tabs=1,5 -RSFX
-	show = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | diff-so-fancy | less --tabs=1,5 -RSFX
+	pager = "$(brew --prefix git)/share/git-core/contrib/diff-highlight/diff-highlight" | diff-so-fancy | less --tabs=1,5 -RSFX
+	show = "$(brew --prefix git)/share/git-core/contrib/diff-highlight/diff-highlight" | diff-so-fancy | less --tabs=1,5 -RSFX
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path =
