@@ -22,7 +22,9 @@ installBrew() {
     echo "[INFO] Brew already installed."
   else
     echo "[INFO] Installing Homebrew package manager...";
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.bash_profile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
 }
 
@@ -54,13 +56,13 @@ installAsdf() {
   echo "[INFO] Installing asdf plugins...";
   source $HOME/.asdf/asdf.sh;
 
-  asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git;
-  asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git;
+  asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git;
+  asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git;
   bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring;
-  asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git;
-  asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git;
-  asdf plugin-add terraform https://github.com/Banno/asdf-hashicorp.git;
-  asdf plugin-add packer https://github.com/Banno/asdf-hashicorp.git;
+  asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git;
+  asdf plugin add elixir https://github.com/asdf-vm/asdf-elixir.git;
+  asdf plugin add terraform https://github.com/Banno/asdf-hashicorp.git;
+  asdf plugin add packer https://github.com/Banno/asdf-hashicorp.git;
 
   asdf install
   asdf reshim nodejs
