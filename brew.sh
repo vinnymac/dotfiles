@@ -86,6 +86,9 @@ brew install ack
 #brew install exiv2
 brew install git
 brew install git-lfs
+brew install gh
+# Create diff highlight
+make -C $(brew --prefix git)/share/git-core/contrib/diff-highlight
 brew install imagemagick --with-webp
 brew install lua
 brew install lynx
@@ -102,12 +105,8 @@ brew install htop
 brew install ansible
 brew install diff-so-fancy
 
-# Install Caskroom
-brew uninstall brew-cask
-brew untap caskroom/cask
-brew tap caskroom/cask
-brew install brew-cask
-brew tap caskroom/versions
+brew tap homebrew/cask-fonts
+brew install --cask font-fira-code
 
 # Install packages
 apps=(
@@ -131,15 +130,14 @@ apps=(
   vlc
 )
 
-for app in "${apps[@]}"; do brew cask install --appdir="/Applications" "$app"; done
+for app in "${apps[@]}"; do brew install --cask --appdir="/Applications" "$app"; done
 
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
-brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv webpquicklook suspicious-package && qlmanage -r
+brew install --cask qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv webpquicklook suspicious-package && \
+xattr -cr ~/Library/QuickLook/*.qlgenerator && \
+qlmanage -r && \
+qlmanage -r cache
 
-# VS Code Symlinks
-mkdir -p ~/Library/Application\ Support/Code/User/
-ln -s ./.code/settings.json ~/Library/Application\ Support/Code/User/settings.json
-ln -s ./.code/keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
 
 # Remove outdated versions from the cellar.
 brew cleanup
