@@ -11,8 +11,8 @@
   ci = commit -v
   co = checkout
   su =  !git branch --set-upstream-to=origin/$(git rev-parse --abbrev-ref HEAD) $(git rev-parse --abbrev-ref HEAD)
-  dlm = !git branch --merged | sed '/^** *develop$/d' | sed '/^** *master$/d' | xargs git branch -d
-  drm = !git checkout master && git branch -r --merged | grep -v master | sed \"s/origin\\///\" | xargs -n 1 git push --delete origin
+  dlm = !git branch --merged | sed '/^** *develop$/d' | sed '/^** *master$/d' | sed '/^** *main$/d' | xargs git branch -d
+  drm = !git checkout $(git default) && git branch -r --merged | grep -v $(git default) | sed \"s/origin\\///\" | xargs -n 1 git push --delete origin
   create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
   delete-branch = !sh -c 'git push origin :refs/heads/$1 && git remote prune origin && git branch -D $1' -
   merge-branch = !git checkout master && git merge @{-1}
@@ -48,6 +48,7 @@
   rh = reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
   plas = pull --autostash
   br = branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
+  default = !git branch -rl '*/HEAD' | rev | cut -d/ -f1 | rev
 [user]
 	name = Vincent Taverna
 	email = vinnymac@gmail.com
