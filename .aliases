@@ -1,3 +1,4 @@
+alias unixtime="date +%s"
 alias grep="grep -i"
 alias which='type -all'                                                     # which:        Find executables
 alias f='open -a Finder ./'                                                 # f:            Opens current directory in MacOS Finder
@@ -30,4 +31,72 @@ cd() { builtin cd "$@"; ll; }                                               # Al
 
 pidport() {
   lsof -n -i4TCP:$1 | grep LISTEN;
+}
+
+# AWS Vault
+alias ave="aws-vault exec home --"
+alias avl="aws-vault login home --duration 12h"
+alias avr="aws-vault rotate home --no-session"
+
+# Create Feature Branch
+# Arg 1: Branch Name (Required)
+cfb () {
+  if [ -z "$1" ]; then
+    echo "No branch named specified."
+    return 1
+  fi
+
+  git checkout master
+  # Create Release Branch
+  git pull
+  git checkout -b release/feature/$1 && git push
+  # Create Feature Branch
+  git checkout master
+  git checkout -b $1
+}
+
+# Creates a feature PR for a feature branch
+# Arg 1: PR Title (Required)
+cpr () {
+  gh pr create --title $1 --base "release/feature/$(git rev-parse --abbrev-ref HEAD)" --fill --draft
+}
+
+# Show all release PRs
+srpr () {
+  gh pr list --base master --label "Type: Release"
+}
+
+# Creates a release PR for a feature branch
+# Should be executed from a feature branch
+# Arg 1: PR Title (Required)
+crpr () {
+  gh pr create --title $1 --base master --head "release/feature/$(git rev-parse --abbrev-ref HEAD)" --label "Type: Release" --fill
+}
+
+pidport() {
+  lsof -n -i4TCP:$1 | grep LISTEN;
+}
+
+# Update AWS credentials from vault keychain
+# Arg 1: AWS Vault Profile Name (e.g. default or home)
+#
+# If you are using a newer version of macOS you may need,
+# to explicitly add the `aws-vault.keychain` for this to work via KeyChain Access
+# https://github.com/99designs/aws-vault/issues/534#issuecomment-596971986
+update_credentials() {
+  if [ -z "$1" ]; then
+    echo "Missing keychain account, usually the name of your aws-vault profile";
+    return 1;
+  fi
+
+  SECRET=$(security 2>&1 >/dev/null find-generic-password -ga $1)
+  ACCESS_KEY_ID=$(echo $SECRET | sed -E 's/^password\: "(.*)"$/\1/g' | jq -r '.AccessKeyID')
+  SECRET_ACCESS_KEY=$(echo $SECRET | sed -E 's/^password\: "(.*)"$/\1/g' | jq -r '.SecretAccessKey')
+
+  mv ~/.aws/credentials ~/.aws/credentials.bak
+  touch ~/.aws/credentials
+  chmod 600 ~/.aws/credentials
+  echo "[default]" > ~/.aws/credentials
+  echo "aws_access_key_id=$ACCESS_KEY_ID" >> ~/.aws/credentials
+  echo "aws_secret_access_key=$SECRET_ACCESS_KEY" >> ~/.aws/credentials
 }
