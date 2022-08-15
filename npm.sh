@@ -17,7 +17,8 @@ npm install -g "${packages[@]}"
 curl -s https://raw.githubusercontent.com/tophat/yvm/master/scripts/install.js | node
 # Setup YVM
 brew install tophat/bar/yvm
-node $HOME/.yvm/yvm.js configure-shell
+node "/opt/homebrew/opt/yvm/yvm.js" configure-shell --yvmDir "/opt/homebrew/opt/yvm"
+source ~/.bash_profile;
 
 # Install yarn
 yarn --version
