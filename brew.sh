@@ -128,6 +128,7 @@ apps=(
   virtualbox
   visual-studio-code
   vlc
+  cron
 )
 
 for app in "${apps[@]}"; do brew install --cask --appdir="/Applications" "$app"; done
