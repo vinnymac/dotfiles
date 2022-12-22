@@ -103,7 +103,7 @@ brew install vbindiff
 brew install zopfli
 brew install htop
 brew install ansible
-brew install diff-so-fancy
+brew install git-delta
 
 brew tap homebrew/cask-fonts
 brew install --cask font-fira-code
