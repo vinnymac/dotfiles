@@ -13,6 +13,7 @@
   su =  !git branch --set-upstream-to=origin/$(git rev-parse --abbrev-ref HEAD) $(git rev-parse --abbrev-ref HEAD)
   dlm = !git branch --merged | sed '/^** *develop$/d' | sed '/^** *master$/d' | sed '/^** *main$/d' | xargs git branch -d
   drm = !git checkout $(git default) && git branch -r --merged | grep -v $(git default) | sed \"s/origin\\///\" | xargs -n 1 git push --delete origin
+  dsm = "!f () { git checkout -q $(git default) && git for-each-ref refs/heads/ \"--format=%(refname:short)\" | while read branch; do mergeBase=$(git merge-base $(git default) $branch) && [[ $(git cherry $(git default) $(git commit-tree $(git rev-parse \"$branch^{tree}\") -p $mergeBase -m _)) == \"-\"* ]] && (if [[ $1 != \"-d\" ]]; then git branch -D $branch; else echo \"$branch is merged into $(git default) and can be deleted\"; fi) done }; f"
   create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
   delete-branch = !sh -c 'git push origin :refs/heads/$1 && git remote prune origin && git branch -D $1' -
   merge-branch = !git checkout master && git merge @{-1}
@@ -51,7 +52,7 @@
   default = !git branch -rl '*/HEAD' | rev | cut -d/ -f1 | rev
 [user]
 	name = Vincent Taverna
-	email = vinnymac@gmail.com
+	email = vinnymac@duck.com
 [branch]
   autosetuprebase = always
 [branch "master"]
