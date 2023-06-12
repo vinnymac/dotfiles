@@ -100,3 +100,7 @@ update_credentials() {
   echo "aws_access_key_id=$ACCESS_KEY_ID" >> ~/.aws/credentials
   echo "aws_secret_access_key=$SECRET_ACCESS_KEY" >> ~/.aws/credentials
 }
+
+tsh() {
+  ssh -o RequestTTY=yes "$@" tmux -CC new -A -s tmux-main
+}
