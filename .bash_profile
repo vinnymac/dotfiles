@@ -23,3 +23,6 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$PATH:$(yarn global dir)/node_modules/.bin"
+
+# Silence macOS Deprecation Warning for default shell
+export BASH_SILENCE_DEPRECATION_WARNING=1

@@ -81,6 +81,10 @@ brew install ucspi-tcp # `tcpserver` etc.
 brew install xpdf
 brew install xz
 
+# Terminal Recording
+brew install asciinema
+brew install agg
+
 # Install other useful binaries.
 brew install ack
 #brew install exiv2
