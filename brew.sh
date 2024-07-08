@@ -23,16 +23,16 @@ brew install findutils
 # Install GNU `sed`, overwriting the built-in `sed`.
 brew install gnu-sed --with-default-names
 # Install Bash 4.
-brew install bash
-brew install bash-completion2
-brew install fzf
-brew install bat
+brew install bash \
+  bash-completion2 \
+  fzf \
+  bat
 
 # Switch to using brew-installed bash as default shell
 if ! fgrep -q "${BREW_PREFIX}/bin/bash" /etc/shells; then
-  echo "${BREW_PREFIX}/bin/bash" | sudo tee -a /etc/shells;
-  chsh -s "${BREW_PREFIX}/bin/bash";
-fi;
+  echo "${BREW_PREFIX}/bin/bash" | sudo tee -a /etc/shells
+  chsh -s "${BREW_PREFIX}/bin/bash"
+fi
 
 # Install `wget` with IRI support.
 brew install wget --with-iri
@@ -45,15 +45,15 @@ brew install vim --with-override-system-vi
 brew install grep
 # Uncomment this for linux
 # brew install openssh
-brew install screen
-brew install php
-brew install gmp
+brew install screen \
+  php \
+  gmp
 
 # Install font tools.
 brew tap bramstein/webfonttools
-brew install sfnt2woff
-brew install sfnt2woff-zopfli
-brew install woff2
+brew install sfnt2woff \
+  sfnt2woff-zopfli \
+  woff2
 
 # Install some CTF tools; see https://github.com/ctfs/write-ups.
 brew install aircrack-ng
@@ -111,6 +111,7 @@ brew install git-delta
 
 brew tap homebrew/cask-fonts
 brew install --cask font-fira-code
+brew install font-0xproto-nerd-font
 
 # Install packages
 apps=(
@@ -138,11 +139,10 @@ apps=(
 for app in "${apps[@]}"; do brew install --cask --appdir="/Applications" "$app"; done
 
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
-brew install --cask qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv webpquicklook suspicious-package && \
-xattr -cr ~/Library/QuickLook/*.qlgenerator && \
-qlmanage -r && \
-qlmanage -r cache
-
+brew install --cask qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv webpquicklook suspicious-package &&
+  xattr -cr ~/Library/QuickLook/*.qlgenerator &&
+  qlmanage -r &&
+  qlmanage -r cache
 
 # Remove outdated versions from the cellar.
 brew cleanup
