@@ -50,47 +50,53 @@
   plas = pull --autostash
   br = branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
   default = !git branch -rl '*/HEAD' | rev | cut -d/ -f1 | rev
+  wt = worktree
+  wtls = worktree list
+  wtct = worktree add
+  wtrm = worktree remove
 [user]
-	name = Vincent Taverna
-	email = vinnymac@duck.com
+  name = Vincent Taverna
+  email = vinnymac@duck.com
 [branch]
   autosetuprebase = always
 [branch "master"]
   rebase = true
+[branch "main"]
+  rebase = true
 [remote "origin"]
   push = HEAD
 [core]
-	commentchar = auto
-	excludesfile = /Users/vinnymac/.gitignore_global
-	pager = delta
-	show = delta
+  commentchar = auto
+  excludesfile = /Users/vinnymac/.gitignore_global
+  pager = delta
+  show = delta
 [interactive]
-	diffFilter = delta --color-only
+  diffFilter = delta --color-only
 [delta]
-	navigate = true
-	light = false
-	side-by-side = true
+  navigate = true
+  light = false
+  side-by-side = true
 [merge]
-	conflictstyle = diff3
+  conflictstyle = diff3
 [diff]
-	colorMoved = default
+  colorMoved = default
 [difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path =
+  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+  path =
 [mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+  cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  trustExitCode = true
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 [grep]
-        lineNumber = true
+  lineNumber = true
 [commit]
-	template = /Users/vinnymac/.stCommitMsg
+  template = /Users/vinnymac/.stCommitMsg
 [github]
-	user = vinnymac
+  user = vinnymac
 [merge "npm-merge-driver"]
-	name = automatically merge npm lockfiles
-	driver = npx npm-merge-driver merge %A %O %B %P
+  name = automatically merge npm lockfiles
+  driver = npx npm-merge-driver merge %A %O %B %P

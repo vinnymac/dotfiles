@@ -111,7 +111,7 @@ brew install git-delta
 
 brew tap homebrew/cask-fonts
 brew install --cask font-fira-code
-brew install font-0xproto-nerd-font
+brew install --cask font-0xproto-nerd-font
 
 # Install packages
 apps=(
