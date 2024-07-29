@@ -94,7 +94,7 @@
 [grep]
   lineNumber = true
 [commit]
-  template = /Users/vinnymac/.stCommitMsg
+  template = /Users/vinnymac/.gitmessage
 [github]
   user = vinnymac
 [merge "npm-merge-driver"]
