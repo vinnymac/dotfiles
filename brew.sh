@@ -21,7 +21,7 @@ brew install moreutils
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed.
 brew install findutils
 # Install GNU `sed`, overwriting the built-in `sed`.
-brew install gnu-sed --with-default-names
+brew install gnu-sed
 # Install Bash 4.
 brew install bash \
   bash-completion2 \
@@ -35,13 +35,13 @@ if ! fgrep -q "${BREW_PREFIX}/bin/bash" /etc/shells; then
 fi
 
 # Install `wget` with IRI support.
-brew install wget --with-iri
+brew install wget
 
 # Install GnuPG to enable PGP-signing commits.
 brew install gnupg
 
 # Install more recent versions of some macOS tools.
-brew install vim --with-override-system-vi
+brew install vim
 brew install grep
 # Uncomment this for linux
 # brew install openssh
@@ -56,71 +56,77 @@ brew install sfnt2woff \
   woff2
 
 # Install some CTF tools; see https://github.com/ctfs/write-ups.
-brew install aircrack-ng
-brew install bfg
-brew install binutils
-brew install binwalk
-brew install cifer
-brew install dex2jar
-brew install dns2tcp
-brew install fcrackzip
-brew install foremost
-brew install hashpump
-brew install hydra
-brew install john
-brew install knock
-brew install netpbm
-brew install nmap
-brew install pngcheck
-brew install socat
-brew install sqlmap
-brew install tcpflow
-brew install tcpreplay
-brew install tcptrace
-brew install ucspi-tcp # `tcpserver` etc.
-brew install xpdf
-brew install xz
+ctfs=(
+  aircrack-ng
+  bfg
+  binutils
+  binwalk
+  cifer
+  dex2jar
+  dns2tcp
+  fcrackzip
+  foremost
+  hydra
+  john
+  knock
+  netpbm
+  nmap
+  pngcheck
+  socat
+  sqlmap
+  tcpflow
+  tcpreplay
+  tcptrace
+  ucspi-tcp # `tcpserver` etc.
+  xpdf
+  xz
+)
+for ctf in "${ctfs[@]}"; do brew install "$ctf"; done
 
-# Terminal Recording
-brew install asciinema
-brew install agg
 
 # Install other useful binaries.
-brew install ack
-#brew install exiv2
-brew install git
-brew install git-lfs
-brew install gh
+bins=(
+  python
+  # Terminal Recording
+  asciinema
+  agg
+  # Git
+  git
+  git-lfs
+  gh
+  git-delta
+  imagemagick
+  ack
+  lua
+  lynx
+  p7zip
+  pigz
+  pv
+  rename
+  rlwrap
+  ssh-copy-id
+  tree
+  vbindiff
+  zopfli
+  htop
+  ansible
+  orbstack
+)
+for bin in "${bins[@]}"; do brew install "$bin"; done
+
 # Create diff highlight
 make -C $(brew --prefix git)/share/git-core/contrib/diff-highlight
-brew install imagemagick --with-webp
-brew install lua
-brew install lynx
-brew install p7zip
-brew install pigz
-brew install pv
-brew install rename
-brew install rlwrap
-brew install ssh-copy-id
-brew install tree
-brew install vbindiff
-brew install zopfli
-brew install htop
-brew install ansible
-brew install git-delta
 
-brew tap homebrew/cask-fonts
-brew install --cask font-fira-code
+brew install --cask 
 brew install --cask font-0xproto-nerd-font
 
 # Install packages
 apps=(
-  atom
   docker
   firefox
-  firefox-nightly
+  firefox@nightly
   google-chrome
-  google-chrome-canary
+  google-chrome@canary
   iterm2
   keepingyouawake
   keka
@@ -134,12 +140,18 @@ apps=(
   visual-studio-code
   vlc
   cron
+  raycast
+  datagrip
+  linear-linear
+  bitwarden
 )
 
 for app in "${apps[@]}"; do brew install --cask --appdir="/Applications" "$app"; done
 
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
-brew install --cask qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv webpquicklook suspicious-package &&
+# Sequoia and higher do not support legacy quick look plugins
+# https://developer.apple.com/documentation/macos-release-notes/macos-15-release-notes
+brew install qlcolorcode qlstephen qlmarkdown quicklook-json qlimagesize suspicious-package apparency quicklookase qlvideo &&
   xattr -cr ~/Library/QuickLook/*.qlgenerator &&
   qlmanage -r &&
   qlmanage -r cache

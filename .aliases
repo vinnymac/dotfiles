@@ -73,9 +73,6 @@ crpr () {
   gh pr create --title $1 --base master --head "release/feature/$(git rev-parse --abbrev-ref HEAD)" --label "Type: Release" --fill
 }
 
-pidport() {
-  lsof -n -i4TCP:$1 | grep LISTEN;
-}
 
 # Update AWS credentials from vault keychain
 # Arg 1: AWS Vault Profile Name (e.g. default or home)

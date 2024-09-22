@@ -37,8 +37,8 @@ updateBrew() {
 
 installSoftware() {
   /bin/bash ./brew.sh;
-  /bin/bash ./aws2.sh;
-  /bin/bash ./npm.sh;
+  /bin/bash ./aws2ForM1.sh;
+  /bin/bash ./node.sh;
   /bin/bash ./android.sh;
   /bin/bash ./xcode.sh;
 }
@@ -81,13 +81,14 @@ syncConfig() {
     --exclude ".macos" \
     --exclude "README.md" \
     --exclude "LICENSE.md" \
-    --exclude "npm.sh" \
+    --exclude "node.sh" \
     --exclude "brew.sh" \
     --exclude "install.sh" \
-    --exclude "aws.sh" \
     --exclude "aws2.sh" \
+    --exclude "aws2ForM1.sh" \
     --exclude "xcode.sh" \
     --exclude "android.sh" \
+    --exclude "iTerm2_default.json" \
     -avh --no-perms . ~;
 }
 
@@ -100,6 +101,7 @@ doIt() {
   updateBrew;
 
   installAsdf;
+  installVolta;
   installSoftware;
   syncConfig;
   macOsConfig;

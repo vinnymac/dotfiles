@@ -22,7 +22,6 @@ brew install --appdir="~/Applications" java
 brew install --cask --appdir="~/Applications" intellij-idea-ce
 brew install --cask --appdir="~/Applications" android-studio
 
-brew tap homebrew/cask
 brew install --cask android-sdk
 
 # Remove outdated versions from the cellar.
