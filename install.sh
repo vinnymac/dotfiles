@@ -10,7 +10,7 @@ echo "-------------------------------------------------";
 echo "";
 
 platform='undefined';
-unamestr=`uname`;
+unamestr="$(uname)";
 if [[ "$unamestr" == 'Linux' ]]; then
   platform='linux';
 elif [[ "$unamestr" == 'Darwin' ]]; then
@@ -37,7 +37,7 @@ updateBrew() {
 
 installSoftware() {
   /bin/bash ./brew.sh;
-  /bin/bash ./aws2ForM1.sh;
+  /bin/bash ./aws2.sh;
   /bin/bash ./node.sh;
   /bin/bash ./android.sh;
   /bin/bash ./xcode.sh;
