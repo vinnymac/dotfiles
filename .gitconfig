@@ -101,8 +101,8 @@
     name = "yarn lock merge driver"
     driver = yarn install
 [merge "resolve-package-lock"]
-    name = "package lock theirs-only merge driver"
-    driver = cp -f '%B' '%A' && npm install
+    name = "npm package lock merge driver"
+    driver = npm install --package-lock-only
 [includeIf "gitdir:~/Sites/"]
   path = ~/Sites/.gitconfig-oss
 [includeIf "hasconfig:remote.*.url:git@github.com:pointhound-eng/**"]
