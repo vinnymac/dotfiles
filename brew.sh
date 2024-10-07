@@ -83,7 +83,6 @@ ctfs=(
 )
 for ctf in "${ctfs[@]}"; do brew install "$ctf"; done
 
-
 # Install other useful binaries.
 bins=(
   python
@@ -117,16 +116,20 @@ for bin in "${bins[@]}"; do brew install "$bin"; done
 # Create diff highlight
 make -C $(brew --prefix git)/share/git-core/contrib/diff-highlight
 
-brew install --cask 
+brew install --cask
 brew install --cask font-0xproto-nerd-font
+
+# Chromium
+brew install chromium --no-quarantine
 
 # Install packages
 apps=(
   docker
   firefox
   firefox@nightly
-  google-chrome
-  google-chrome@canary
+  # Fuck Google
+  # google-chrome
+  # google-chrome@canary
   iterm2
   keepingyouawake
   keka
@@ -144,6 +147,8 @@ apps=(
   datagrip
   linear-linear
   bitwarden
+  shottr
+  background-music
 )
 
 for app in "${apps[@]}"; do brew install --cask --appdir="/Applications" "$app"; done
