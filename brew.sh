@@ -151,6 +151,7 @@ apps=(
   bitwarden
   shottr
   background-music
+  rectangle
 )
 
 for app in "${apps[@]}"; do brew install --cask --appdir="/Applications" "$app"; done
