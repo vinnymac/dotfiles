@@ -99,7 +99,7 @@
   user = vinnymac
 [merge "resolve-yarn-lock"]
     name = "yarn lock merge driver"
-    driver = yarn install
+    driver = ~/.config/git/yarn-merge-driver.sh %O %A %B
 [merge "resolve-package-lock"]
     name = "npm package lock merge driver"
     driver = npm install --package-lock-only
