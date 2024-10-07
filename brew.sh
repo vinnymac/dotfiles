@@ -140,7 +140,9 @@ apps=(
   transmission
   vagrant
   virtualbox
-  visual-studio-code
+  # Fuck Microsoft
+  # visual-studio-code
+  vscodium
   vlc
   cron
   raycast
