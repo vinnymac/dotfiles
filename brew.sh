@@ -152,6 +152,7 @@ apps=(
   shottr
   background-music
   rectangle
+  PlayCover/playcover/playcover-community
 )
 
 for app in "${apps[@]}"; do brew install --cask --appdir="/Applications" "$app"; done
