@@ -113,9 +113,6 @@ bins=(
 )
 for bin in "${bins[@]}"; do brew install "$bin"; done
 
-# Create diff highlight
-make -C $(brew --prefix git)/share/git-core/contrib/diff-highlight
-
 brew install --cask
 brew install --cask font-0xproto-nerd-font
 
