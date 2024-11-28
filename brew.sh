@@ -26,7 +26,10 @@ brew install gnu-sed
 brew install bash \
   bash-completion2 \
   fzf \
-  bat
+  bat \
+  eza \
+  fd \
+  zoxide
 
 # Switch to using brew-installed bash as default shell
 if ! fgrep -q "${BREW_PREFIX}/bin/bash" /etc/shells; then
@@ -140,6 +143,7 @@ apps=(
   # Fuck Microsoft
   # visual-studio-code
   vscodium
+  zed
   vlc
   cron
   raycast
