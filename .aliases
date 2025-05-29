@@ -103,3 +103,14 @@ update_credentials() {
 tsh() {
   ssh -o RequestTTY=yes "$@" tmux -CC new -A -s tmux-main
 }
+
+# Follow with bat
+function batf() {
+  local filename="$1"
+  if [[ ! -f "$filename" ]]; then
+    echo "Error: File '$filename' does not exist."
+    return 1
+  fi
+  local extension="${filename##*.}"
+  tail -f "$filename" | bat -l "$extension" --paging=never
+}
