@@ -18,7 +18,13 @@ if [ -f ~/.git-completion.bash ]; then
   __git_complete gc _git_checkout
 fi
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# Homebrew shell environment
+brew_cmd="/usr/local/bin/brew"
+if [[ "$(uname)" == "Darwin" && "$(uname -p)" == "arm" ]]; then
+  # The prefix /opt/homebrew was chosen to allow installations in /opt/homebrew for Apple Silicon and /usr/local for Rosetta 2 to coexist and use bottles.
+  brew_cmd="/opt/homebrew/bin/brew"
+fi
+eval "$(${brew_cmd} shellenv)"
 
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --bash)"
