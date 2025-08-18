@@ -27,10 +27,13 @@ alias .6='cd ../../../../../../' # Go back 6 directory levels
 mcd() { mkdir -p "$1" && z "$1"; }     # mcd:          Makes new Dir and jumps inside
 trash() { command mv "$@" ~/.Trash; }  # trash:        Moves a file to the MacOS trash
 ql() { qlmanage -p "$*" >&/dev/null; } # ql:           Opens any file in MacOS Quicklook Preview
-cd() {
-  z "$@"
-  ll
-} # Always list directory contents upon 'cd'
+# Only define custom cd if not in AI/LLM environments
+if [[ -z "$CLAUDECODE" ]] && [[ -z "$CURSOR_EDITOR" ]] && [[ -z "$GITHUB_COPILOT_SHELL" ]]; then
+  cd() {
+    z "$@"
+    ll
+  } # Always list directory contents upon 'cd'
+fi
 
 pidport() {
   lsof -n -i4TCP:$1 | grep LISTEN
