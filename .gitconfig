@@ -1,109 +1,111 @@
 [push]
-  default = current
+	default = current
 [color]
-  ui = auto
+	ui = auto
 [alias]
-  dis = diff --staged
-  rp = reset --patch
-  aa = add --all
-  ap = add --patch
-  ca = commit --amend
-  ci = commit -v
-  co = checkout
-  su =  !git branch --set-upstream-to=origin/$(git rev-parse --abbrev-ref HEAD) $(git rev-parse --abbrev-ref HEAD)
-  dlm = !git branch --merged | sed '/^** *develop$/d' | sed '/^** *master$/d' | sed '/^** *main$/d' | xargs git branch -d
-  drm = !git checkout $(git default) && git branch -r --merged | grep -v $(git default) | sed \"s/origin\\///\" | xargs -n 1 git push --delete origin
-  dsm = "!f () { git checkout -q $(git default) && git for-each-ref refs/heads/ \"--format=%(refname:short)\" | while read branch; do mergeBase=$(git merge-base $(git default) $branch) && [[ $(git cherry $(git default) $(git commit-tree $(git rev-parse \"$branch^{tree}\") -p $mergeBase -m _)) == \"-\"* ]] && (if [[ $1 != \"-d\" ]]; then git branch -D $branch; else echo \"$branch is merged into $(git default) and can be deleted\"; fi) done }; f"
-  create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
-  delete-branch = !sh -c 'git push origin :refs/heads/$1 && git remote prune origin && git branch -D $1' -
-  merge-branch = !git checkout master && git merge @{-1}
-  nb = branch --sort=-committerdate
-  ob = branch --sort=committerdate
-  pr = !hub pull-request
-  c = commit -m
-  cn = commit -nm
-  a = add
-  aa= !git add -u && git add . && git status
-  di = diff
-  dic = diff --cached
-  pl = pull
-  ps = push
-  plre = pull --rebase
-  st = status
-  out = log origin..HEAD
-  qpl = log --pretty=\"%Cblue%h%Creset %Cgreen[%cr]%Creset %s\" origin/production..origin/master
-  graph = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
-  ci = commit
-  ca = commit --amend -C HEAD
-  cleanup = !git remote prune origin && git gc && git clean -dfx -e .rvmrc && git stash clear
-  up = !git fetch origin && git rebase origin/master
-  done = !git fetch && git rebase origin/master && git checkout master && git merge @{-1} && rake && git push
-  down = !git fetch && git rebase origin/master && git checkout master && git merge @{-1} && rake && git push
-  ir = !git rebase -i origin/master
-  who = shortlog -n -s --no-merges
-  unfuck = reset --hard HEAD
-  cob = checkout -b
-  rmb = !sh -c 'git branch -D $1 && git push origin :$1' -
-  start = flow feature start
-  end = flow feature finish
-  rh = reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
-  plas = pull --autostash
-  br = branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
-  default = !git branch -rl '*/HEAD' | rev | cut -d/ -f1 | rev
-  wt = worktree
-  wtls = worktree list
-  wtct = worktree add
-  wtrm = worktree remove
+	dis = diff --staged
+	rp = reset --patch
+	aa = add --all
+	ap = add --patch
+	ca = commit --amend
+	ci = commit -v
+	co = checkout
+	su =	!git branch --set-upstream-to=origin/$(git rev-parse --abbrev-ref HEAD) $(git rev-parse --abbrev-ref HEAD)
+	dlm = !git branch --merged | sed '/^** *develop$/d' | sed '/^** *master$/d' | sed '/^** *main$/d' | xargs git branch -d
+	drm = !git checkout $(git default) && git branch -r --merged | grep -v $(git default) | sed \"s/origin\\///\" | xargs -n 1 git push --delete origin
+	dsm = "!f () { git checkout -q $(git default) && git for-each-ref refs/heads/ \"--format=%(refname:short)\" | while read branch; do mergeBase=$(git merge-base $(git default) $branch) && [[ $(git cherry $(git default) $(git commit-tree $(git rev-parse \"$branch^{tree}\") -p $mergeBase -m _)) == \"-\"* ]] && (if [[ $1 != \"-d\" ]]; then git branch -D $branch; else echo \"$branch is merged into $(git default) and can be deleted\"; fi) done }; f"
+	create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
+	delete-branch = !sh -c 'git push origin :refs/heads/$1 && git remote prune origin && git branch -D $1' -
+	merge-branch = !git checkout master && git merge @{-1}
+	nb = branch --sort=-committerdate
+	ob = branch --sort=committerdate
+	pr = !hub pull-request
+	c = commit -m
+	cn = commit -nm
+	a = add
+	aa= !git add -u && git add . && git status
+	di = diff
+	dic = diff --cached
+	pl = pull
+	ps = push
+	plre = pull --rebase
+	st = status
+	out = log origin..HEAD
+	qpl = log --pretty=\"%Cblue%h%Creset %Cgreen[%cr]%Creset %s\" origin/production..origin/master
+	graph = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+	ci = commit
+	ca = commit --amend -C HEAD
+	cleanup = !git remote prune origin && git gc && git clean -dfx -e .rvmrc && git stash clear
+	up = !git fetch origin && git rebase origin/master
+	done = !git fetch && git rebase origin/master && git checkout master && git merge @{-1} && rake && git push
+	down = !git fetch && git rebase origin/master && git checkout master && git merge @{-1} && rake && git push
+	ir = !git rebase -i origin/master
+	who = shortlog -n -s --no-merges
+	unfuck = reset --hard HEAD
+	cob = checkout -b
+	rmb = !sh -c 'git branch -D $1 && git push origin :$1' -
+	start = flow feature start
+	end = flow feature finish
+	rh = reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
+	plas = pull --autostash
+	br = branch --sort=-committerdate --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
+	default = !git branch -rl '*/HEAD' | rev | cut -d/ -f1 | rev
+	wt = worktree
+	wtls = worktree list
+	wtct = worktree add
+	wtrm = worktree remove
 [user]
-  name = Vincent Taverna
-  email = vinnymac@duck.com
+	name = Vincent Taverna
+	email = vinnymac@duck.com
 [branch]
-  autosetuprebase = always
+	autosetuprebase = always
 [branch "master"]
-  rebase = true
+	rebase = true
 [branch "main"]
-  rebase = true
+	rebase = true
 [remote "origin"]
-  push = HEAD
+	push = HEAD
 [core]
-  commentchar = auto
-  excludesfile = /Users/vinnymac/.gitignore_global
-  pager = delta
-  show = delta
+	commentchar = auto
+	excludesfile = /Users/vinnymac/.gitignore_global
+	pager = delta
+	show = delta
 [interactive]
-  diffFilter = delta --color-only
+	diffFilter = delta --color-only
 [delta]
-  navigate = true
-  light = false
-  side-by-side = true
+	navigate = true
+	dark = true
+	side-by-side = true
 [merge]
-  conflictstyle = diff3
+	conflictStyle = zdiff3
 [diff]
-  colorMoved = default
+	colorMoved = default
 [difftool "sourcetree"]
-  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-  path =
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
 [mergetool "sourcetree"]
-  cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-  trustExitCode = true
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
 [filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 [grep]
-  lineNumber = true
+	lineNumber = true
 [commit]
-  template = /Users/vinnymac/.gitmessage
+	template = /Users/vinnymac/.gitmessage
 [github]
-  user = vinnymac
+	user = vinnymac
 [merge "resolve-yarn-lock"]
-    name = "yarn lock merge driver"
-    driver = ~/.config/git/yarn-merge-driver.sh %O %A %B
+	name = "yarn lock merge driver"
+	driver = ~/.config/git/yarn-merge-driver.sh %O %A %B
 [merge "resolve-package-lock"]
-    name = "npm package lock merge driver"
-    driver = npm install --package-lock-only
+	name = "npm package lock merge driver"
+	driver = npm install --package-lock-only
 [includeIf "gitdir:~/Sites/"]
-  path = ~/Sites/.gitconfig-oss
+	path = ~/Sites/.gitconfig-oss
 [includeIf "hasconfig:remote.*.url:git@github.com:pointhound-eng/**"]
-  path = ~/Sites/pointhound/.gitconfig-ph
+	path = ~/Sites/pointhound/.gitconfig-ph
+[init]
+	defaultBranch = main

@@ -18,6 +18,8 @@ if [ -f ~/.git-completion.bash ]; then
   __git_complete gc _git_checkout
 fi
 
+export GIT_PAGER="less"
+
 # Homebrew shell environment
 brew_cmd="/usr/local/bin/brew"
 if [[ "$(uname)" == "Darwin" && "$(uname -p)" == "arm" ]]; then
