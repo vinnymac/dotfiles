@@ -1,142 +1,129 @@
-alias unixtime="date +%s"
-alias grep="grep -i"
-alias which='type -all'                                     # which:        Find executables
-alias f='open -a Finder ./'                                 # f:            Opens current directory in MacOS Finder
-alias c='clear'                                             # c:            Clear terminal display
-alias less='less -FSRXc'                                    # Preferred 'less' implementation
-alias ls='eza --icons=always --all --tree --level=1 --group-directories-first' # ---- Eza (better ls) -----
-alias lsd='eza --icons=always --all --tree --level=1 --only-dirs --group-directories-first'
-alias ll='eza --icons=always  --all --grid --long --tree --level=1 --group-directories-first' # Preferred 'ls' implementation
-alias lld='eza --icons=always  --all --grid --long --tree --level=1 --only-dirs --group-directories-first'
-alias l="eza --all --grid --header --long --flags --tree --extended --group-directories-first"
-alias preview="fzf --preview 'bat --color \"always\" {}'"
-alias llrg="fd . --type f | sort -n | tail -1"
-alias lsml="fd . --type f | sort -nr | tail -1"
-
-# Navigation
-alias ~="cd ~"                   # ~:            Go Home
-alias cd..='cd ../'              # Go back 1 directory level (for fast typers)
-alias ..='cd ../'                # Go back 1 directory level
-alias ...='cd ../../'            # Go back 2 directory levels
-alias .3='cd ../../../'          # Go back 3 directory levels
-alias .4='cd ../../../../'       # Go back 4 directory levels
-alias .5='cd ../../../../../'    # Go back 5 directory levels
-alias .6='cd ../../../../../../' # Go back 6 directory levels
-
-# Helpful additions and overrides
-mcd() { mkdir -p "$1" && z "$1"; }     # mcd:          Makes new Dir and jumps inside
-trash() { command mv "$@" ~/.Trash; }  # trash:        Moves a file to the MacOS trash
-ql() { qlmanage -p "$*" >&/dev/null; } # ql:           Opens any file in MacOS Quicklook Preview
-# Only define custom cd if not in AI/LLM environments
+# Only define these custom aliases if not in AI/LLM environments
 if [[ -z "$CLAUDECODE" ]] && [[ -z "$CURSOR_EDITOR" ]] && [[ -z "$GITHUB_COPILOT_SHELL" ]]; then
+  alias unixtime="date +%s"
+  alias grep="grep -i"
+  alias which='type -all'                                     # which:        Find executables
+  alias f='open -a Finder ./'                                 # f:            Opens current directory in MacOS Finder
+  alias c='clear'                                             # c:            Clear terminal display
+  alias less='less -FSRXc'                                    # Preferred 'less' implementation
+  alias preview="fzf --preview 'bat --color \"always\" {}'"
+  alias llrg="fd . --type f | sort -n | tail -1"
+  alias lsml="fd . --type f | sort -nr | tail -1"
+
+  # Helpful additions and overrides
+  mcd() { mkdir -p "$1" && z "$1"; }     # mcd:          Makes new Dir and jumps inside
+  trash() { command mv "$@" ~/.Trash; }  # trash:        Moves a file to the MacOS trash
+  ql() { qlmanage -p "$*" >&/dev/null; } # ql:           Opens any file in MacOS Quicklook Preview
+
+  alias ls='eza --icons=always --all --tree --level=1 --group-directories-first' # ---- Eza (better ls) -----
+  alias lsd='eza --icons=always --all --tree --level=1 --only-dirs --group-directories-first'
+  alias ll='eza --icons=always  --all --grid --long --tree --level=1 --group-directories-first' # Preferred 'ls' implementation
+  alias lld='eza --icons=always  --all --grid --long --tree --level=1 --only-dirs --group-directories-first'
+  alias l="eza --all --grid --header --long --flags --tree --extended --group-directories-first"
+
+  # Navigation
+  alias ~="cd ~"                   # ~:            Go Home
+  alias cd..='cd ../'              # Go back 1 directory level (for fast typers)
+  alias ..='cd ../'                # Go back 1 directory level
+  alias ...='cd ../../'            # Go back 2 directory levels
+  alias .3='cd ../../../'          # Go back 3 directory levels
+  alias .4='cd ../../../../'       # Go back 4 directory levels
+  alias .5='cd ../../../../../'    # Go back 5 directory levels
+  alias .6='cd ../../../../../../' # Go back 6 directory levels
+
   cd() {
     z "$@"
     ll
   } # Always list directory contents upon 'cd'
-fi
 
-pidport() {
-  lsof -n -i4TCP:$1 | grep LISTEN
-}
+  pidport() {
+    lsof -n -i4TCP:$1 | grep LISTEN
+  }
 
-# AWS Vault
-alias ave="aws-vault exec home --"
-alias avl="aws-vault login home --duration 12h"
-alias avr="aws-vault rotate home --no-session"
+  # AWS Vault
+  alias ave="aws-vault exec home --"
+  alias avl="aws-vault login home --duration 12h"
+  alias avr="aws-vault rotate home --no-session"
 
-# Create Feature Branch
-# Arg 1: Branch Name (Required)
-cfb() {
-  if [ -z "$1" ]; then
-    echo "No branch named specified."
-    return 1
-  fi
-
-  git checkout master
-  # Create Release Branch
-  git pull
-  git checkout -b release/feature/$1 && git push
   # Create Feature Branch
-  git checkout master
-  git checkout -b $1
-}
-
-# Creates a feature PR for a feature branch
-# Arg 1: PR Title (Required)
-cpr() {
-  gh pr create --title $1 --base "release/feature/$(git rev-parse --abbrev-ref HEAD)" --fill --draft
-}
-
-# Show all release PRs
-srpr() {
-  gh pr list --base master --label "Type: Release"
-}
-
-# Creates a release PR for a feature branch
-# Should be executed from a feature branch
-# Arg 1: PR Title (Required)
-crpr() {
-  gh pr create --title $1 --base master --head "release/feature/$(git rev-parse --abbrev-ref HEAD)" --label "Type: Release" --fill
-}
-
-# Update AWS credentials from vault keychain
-# Arg 1: AWS Vault Profile Name (e.g. default or home)
-#
-# If you are using a newer version of macOS you may need,
-# to explicitly add the `aws-vault.keychain` for this to work via KeyChain Access
-# https://github.com/99designs/aws-vault/issues/534#issuecomment-596971986
-update_credentials() {
-  if [ -z "$1" ]; then
-    echo "Missing keychain account, usually the name of your aws-vault profile"
-    return 1
-  fi
-
-  SECRET=$(security 2>&1 >/dev/null find-generic-password -ga $1)
-  ACCESS_KEY_ID=$(echo $SECRET | sed -E 's/^password\: "(.*)"$/\1/g' | jq -r '.AccessKeyID')
-  SECRET_ACCESS_KEY=$(echo $SECRET | sed -E 's/^password\: "(.*)"$/\1/g' | jq -r '.SecretAccessKey')
-
-  mv ~/.aws/credentials ~/.aws/credentials.bak
-  touch ~/.aws/credentials
-  chmod 600 ~/.aws/credentials
-  echo "[default]" >~/.aws/credentials
-  echo "aws_access_key_id=$ACCESS_KEY_ID" >>~/.aws/credentials
-  echo "aws_secret_access_key=$SECRET_ACCESS_KEY" >>~/.aws/credentials
-}
-
-tsh() {
-  ssh -o RequestTTY=yes "$@" tmux -CC new -A -s tmux-main
-}
-
-# Follow with bat
-function batf() {
-  local filename="$1"
-  if [[ ! -f "$filename" ]]; then
-    echo "Error: File '$filename' does not exist."
-    return 1
-  fi
-  local extension="${filename##*.}"
-  tail -f "$filename" | bat -l "$extension" --paging=never
-}
-
-# Override git so that `git push -f` is not used over force-with-lease
-function git () {
-  local ispush
-  ispush=0
-  local isforce
-  isforce=0
-  for arg in "$@"; do
-    if [[ "$arg" == "push" ]]; then
-      ispush=1
-    fi
-    if [ "$ispush" -eq 1 ]; then
-      if [[ "$arg" == '--force' ]] || [[ "$arg" =~ ^\-[^\-]*f.*$ ]]; then
-        isforce=1
-      fi
-    fi
-    if [ $isforce -eq 1 ]; then
-      >&2 echo "Please use '--force-with-lease' instead of '--force'."
+  # Arg 1: Branch Name (Required)
+  cfb() {
+    if [ -z "$1" ]; then
+      echo "No branch named specified."
       return 1
     fi
-  done
-  command git "$@"
-}
+
+    git checkout master
+    # Create Release Branch
+    git pull
+    git checkout -b release/feature/$1 && git push
+    # Create Feature Branch
+    git checkout master
+    git checkout -b $1
+  }
+
+  # Creates a feature PR for a feature branch
+  # Arg 1: PR Title (Required)
+  cpr() {
+    gh pr create --title $1 --base "release/feature/$(git rev-parse --abbrev-ref HEAD)" --fill --draft
+  }
+
+  # Show all release PRs
+  srpr() {
+    gh pr list --base master --label "Type: Release"
+  }
+
+  # Creates a release PR for a feature branch
+  # Should be executed from a feature branch
+  # Arg 1: PR Title (Required)
+  crpr() {
+    gh pr create --title $1 --base master --head "release/feature/$(git rev-parse --abbrev-ref HEAD)" --label "Type: Release" --fill
+  }
+
+  # Update AWS credentials from vault keychain
+  # Arg 1: AWS Vault Profile Name (e.g. default or home)
+  #
+  # If you are using a newer version of macOS you may need,
+  # to explicitly add the `aws-vault.keychain` for this to work via KeyChain Access
+  # https://github.com/99designs/aws-vault/issues/534#issuecomment-596971986
+  update_credentials() {
+    if [ -z "$1" ]; then
+      echo "Missing keychain account, usually the name of your aws-vault profile"
+      return 1
+    fi
+
+    SECRET=$(security 2>&1 >/dev/null find-generic-password -ga $1)
+    ACCESS_KEY_ID=$(echo $SECRET | sed -E 's/^password\: "(.*)"$/\1/g' | jq -r '.AccessKeyID')
+    SECRET_ACCESS_KEY=$(echo $SECRET | sed -E 's/^password\: "(.*)"$/\1/g' | jq -r '.SecretAccessKey')
+
+    mv ~/.aws/credentials ~/.aws/credentials.bak
+    touch ~/.aws/credentials
+    chmod 600 ~/.aws/credentials
+    echo "[default]" >~/.aws/credentials
+    echo "aws_access_key_id=$ACCESS_KEY_ID" >>~/.aws/credentials
+    echo "aws_secret_access_key=$SECRET_ACCESS_KEY" >>~/.aws/credentials
+  }
+
+  # Tmux SSH w/ out bash
+  tmsh() {
+    ssh -o RequestTTY=yes "$@" tmux -CC new -A -s tmux-main
+  }
+
+  # Tmux SSH w/ bash profile
+  tsh() {
+    ssh -o RequestTTY=yes "$@" '
+      bash -l -c "exec tmux -CC new-session -A -s tmux-main"
+    '
+  }
+
+  # Follow with bat
+  function batf() {
+    local filename="$1"
+    if [[ ! -f "$filename" ]]; then
+      echo "Error: File '$filename' does not exist."
+      return 1
+    fi
+    local extension="${filename##*.}"
+    tail -f "$filename" | bat -l "$extension" --paging=never
+  }
+fi
