@@ -10,8 +10,8 @@
 # )
 # npm install -g "${packages[@]}"
 
-# Install Latest Node 20
-volta install node@20
+# Install Latest Node 22
+volta install node@22
 # Install Latest Yarn 4
 volta install yarn@4
 
@@ -19,5 +19,3 @@ volta install yarn@4
 npm --version
 node --version
 yarn --version
-
-
