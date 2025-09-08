@@ -10,11 +10,6 @@ if [[ -z "$CLAUDECODE" ]] && [[ -z "$CURSOR_EDITOR" ]] && [[ -z "$GITHUB_COPILOT
   alias llrg="fd . --type f | sort -n | tail -1"
   alias lsml="fd . --type f | sort -nr | tail -1"
 
-  # Helpful additions and overrides
-  mcd() { mkdir -p "$1" && z "$1"; }     # mcd:          Makes new Dir and jumps inside
-  trash() { command mv "$@" ~/.Trash; }  # trash:        Moves a file to the MacOS trash
-  ql() { qlmanage -p "$*" >&/dev/null; } # ql:           Opens any file in MacOS Quicklook Preview
-
   alias ls='eza --icons=always --all --tree --level=1 --group-directories-first' # ---- Eza (better ls) -----
   alias lsd='eza --icons=always --all --tree --level=1 --only-dirs --group-directories-first'
   alias ll='eza --icons=always  --all --grid --long --tree --level=1 --group-directories-first' # Preferred 'ls' implementation
@@ -31,6 +26,19 @@ if [[ -z "$CLAUDECODE" ]] && [[ -z "$CURSOR_EDITOR" ]] && [[ -z "$GITHUB_COPILOT
   alias .5='cd ../../../../../'    # Go back 5 directory levels
   alias .6='cd ../../../../../../' # Go back 6 directory levels
 
+  # AWS Vault
+  alias ave="aws-vault exec home --"
+  alias avl="aws-vault login home --duration 12h"
+  alias avr="aws-vault rotate home --no-session"
+fi
+
+# Only define these custom functions if not in AI/LLM environments
+if [[ -z "$CLAUDECODE" ]] && [[ -z "$CURSOR_EDITOR" ]] && [[ -z "$GITHUB_COPILOT_SHELL" ]]; then
+  # Helpful additions and overrides
+  mcd() { mkdir -p "$1" && z "$1"; }     # mcd:          Makes new Dir and jumps inside
+  trash() { command mv "$@" ~/.Trash; }  # trash:        Moves a file to the MacOS trash
+  ql() { qlmanage -p "$*" >&/dev/null; } # ql:           Opens any file in MacOS Quicklook Preview
+
   cd() {
     z "$@"
     ll
@@ -39,11 +47,6 @@ if [[ -z "$CLAUDECODE" ]] && [[ -z "$CURSOR_EDITOR" ]] && [[ -z "$GITHUB_COPILOT
   pidport() {
     lsof -n -i4TCP:$1 | grep LISTEN
   }
-
-  # AWS Vault
-  alias ave="aws-vault exec home --"
-  alias avl="aws-vault login home --duration 12h"
-  alias avr="aws-vault rotate home --no-session"
 
   # Create Feature Branch
   # Arg 1: Branch Name (Required)
