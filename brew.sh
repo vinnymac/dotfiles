@@ -161,7 +161,7 @@ for app in "${apps[@]}"; do brew install --cask --appdir="/Applications" "$app";
 # Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
 # Sequoia and higher do not support legacy quick look plugins
 # https://developer.apple.com/documentation/macos-release-notes/macos-15-release-notes
-brew install qlcolorcode qlstephen qlmarkdown quicklook-json qlimagesize suspicious-package apparency quicklookase qlvideo &&
+brew install qlcolorcode qlstephen qlmarkdown quicklook-json suspicious-package apparency quicklookase qlvideo &&
   xattr -cr ~/Library/QuickLook/*.qlgenerator &&
   qlmanage -r &&
   qlmanage -r cache
