@@ -144,6 +144,7 @@ apps=(
   # visual-studio-code
   vscodium
   zed
+  zen
   vlc
   cron
   raycast
