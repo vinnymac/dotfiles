@@ -123,7 +123,6 @@ brew install --cask font-0xproto-nerd-font
 
 # Install packages
 apps=(
-  docker
   firefox
   firefox@nightly
   # Fuck Google
