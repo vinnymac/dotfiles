@@ -61,7 +61,6 @@ brew install sfnt2woff \
 # Install some CTF tools; see https://github.com/ctfs/write-ups.
 ctfs=(
   aircrack-ng
-  bfg
   binutils
   binwalk
   cifer
