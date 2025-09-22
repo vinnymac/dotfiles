@@ -121,9 +121,6 @@ for bin in "${bins[@]}"; do brew install "$bin"; done
 brew install --cask
 brew install --cask font-0xproto-nerd-font
 
-# Chromium
-brew install chromium --no-quarantine
-
 # Install packages
 apps=(
   docker
@@ -132,6 +129,7 @@ apps=(
   # Fuck Google
   # google-chrome
   # google-chrome@canary
+  ungoogled-chromium
   iterm2
   keepingyouawake
   keka
