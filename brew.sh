@@ -58,6 +58,10 @@ brew install sfnt2woff \
   sfnt2woff-zopfli \
   woff2
 
+# Deskflow - https://github.com/deskflow/homebrew-tap
+brew tap deskflow/homebrew-tap
+brew install deskflow
+
 # Install some CTF tools; see https://github.com/ctfs/write-ups.
 ctfs=(
   aircrack-ng
