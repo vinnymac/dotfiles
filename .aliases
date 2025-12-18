@@ -30,6 +30,8 @@ if [[ -z "$CLAUDECODE" ]] && [[ -z "$CURSOR_EDITOR" ]] && [[ -z "$GITHUB_COPILOT
   alias ave="aws-vault exec home --"
   alias avl="aws-vault login home --duration 12h"
   alias avr="aws-vault rotate home --no-session"
+
+  alias tailscale="/Applications/Tailscale.localized/Tailscale.app/Contents/MacOS/Tailscale"
 fi
 
 # Only define these custom functions if not in AI/LLM environments
@@ -137,5 +139,6 @@ if [[ -z "$CLAUDECODE" ]] && [[ -z "$CURSOR_EDITOR" ]] && [[ -z "$GITHUB_COPILOT
       export KEYCHAIN_UNLOCKED=true
     fi
     command claude "$@"
+    printf '\e[?2004l'
   }
 fi
