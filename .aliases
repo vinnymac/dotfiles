@@ -129,4 +129,13 @@ if [[ -z "$CLAUDECODE" ]] && [[ -z "$CURSOR_EDITOR" ]] && [[ -z "$GITHUB_COPILOT
     local extension="${filename##*.}"
     tail -f "$filename" | bat -l "$extension" --paging=never
   }
+
+  # Wrapper function to unlock keychain before running claude
+  claude() {
+    if [ -n "$SSH_CONNECTION" ] && [ -z "$KEYCHAIN_UNLOCKED" ]; then
+      security unlock-keychain ~/Library/Keychains/login.keychain-db
+      export KEYCHAIN_UNLOCKED=true
+    fi
+    command claude "$@"
+  }
 fi
