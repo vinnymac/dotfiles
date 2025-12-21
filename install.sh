@@ -51,13 +51,10 @@ installVolta() {
   node --version
 }
 
-installAsdf() {
-  # Clone repository
-  echo "[INFO] Cloning asdf repository...";
-  git clone https://github.com/asdf-vm/asdf.git ~/.asdf;
-
-  echo '. $HOME/.asdf/asdf.sh' >> ~/.bashrc;
-  echo '. $HOME/.asdf/completions/asdf.bash' >> ~/.bashrc;
+setupAsdf() {
+  echo '# Asdf' >> ~/.bashrc;
+  echo 'export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.bashrc;
+  echo '. <(asdf completion bash)' >> ~/.bashrc;
   source ~/.bashrc;
 
   # Install useful plugins (at least for me :D)
@@ -100,7 +97,7 @@ doIt() {
   installBrew;
   updateBrew;
 
-  installAsdf;
+  setupAsdf;
   installVolta;
   installSoftware;
   syncConfig;

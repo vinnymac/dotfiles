@@ -115,6 +115,7 @@ bins=(
   htop
   ansible
   orbstack
+  asdf
 )
 for bin in "${bins[@]}"; do brew install "$bin"; done
 
