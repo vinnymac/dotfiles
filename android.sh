@@ -19,7 +19,7 @@ fi
 brew update
 
 brew install --appdir="~/Applications" java
-brew install --cask --appdir="~/Applications" intellij-idea-ce
+brew install --cask --appdir="~/Applications" intellij-idea
 brew install --cask --appdir="~/Applications" android-studio
 
 brew install --cask android-sdk
