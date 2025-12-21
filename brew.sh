@@ -111,11 +111,11 @@ bins=(
   ssh-copy-id
   tree
   vbindiff
-  zopfli
   htop
   ansible
   orbstack
   asdf
+  gemini-cli
 )
 for bin in "${bins[@]}"; do brew install "$bin"; done
 
@@ -155,6 +155,9 @@ apps=(
   background-music
   rectangle
   PlayCover/playcover/playcover-community
+  # LLMs
+  claude-code
+  codex
 )
 
 for app in "${apps[@]}"; do brew install --cask --appdir="/Applications" "$app"; done
