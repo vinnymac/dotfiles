@@ -170,6 +170,8 @@ brew install suspicious-package apparency qlvideo
 # Replaces - qlcolorcode qlstephen qlmarkdown quicklook-json quicklookase
 brew install --no-quarantine glance-chamburr
 
+# Gemini install node as a dependency, but we already install node, so remove it
+brew uninstall --ignore-dependencies node
 
 # Remove outdated versions from the cellar.
 brew cleanup
