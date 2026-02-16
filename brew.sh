@@ -2,176 +2,217 @@
 
 # Install command-line tools using Homebrew.
 
-# Make sure we’re using the latest Homebrew.
+set -euo pipefail
+
+# Get script directory and source utilities
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/lib/utils.sh"
+
+# Configuration variables should be passed via environment from install.sh
+# If running standalone, load config
+if [[ -z "${PLATFORM:-}" ]]; then
+  source "$SCRIPT_DIR/config/default.conf"
+  source "$SCRIPT_DIR/config/packages.conf" 2>/dev/null || true
+  PLATFORM=$(detect_platform)
+fi
+
+# Only run on macOS or if Homebrew is available
+if [[ "$PLATFORM" != "darwin" ]] && ! command_exists brew; then
+  log_error "This script requires macOS or Homebrew"
+  exit 1
+fi
+
+log_info "Starting package installation via Homebrew"
+
+# Make sure we're using the latest Homebrew.
+log_info "Updating Homebrew..."
 brew update
 
 # Upgrade any already-installed formulae.
+log_info "Upgrading existing packages..."
 brew upgrade
 
-# Save Homebrew’s installed location.
+# Save Homebrew's installed location.
 BREW_PREFIX=$(brew --prefix)
 
 # Install GNU core utilities (those that come with macOS are outdated).
-# Don’t forget to add `$(brew --prefix coreutils)/libexec/gnubin` to `$PATH`.
+log_info "Installing GNU core utilities..."
 brew install coreutils
-ln -s "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
 
-# Install some other useful utilities like `sponge`.
-brew install moreutils
-# Install GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed.
-brew install findutils
-# Install GNU `sed`, overwriting the built-in `sed`.
-brew install gnu-sed
-# Install Bash 4.
-brew install bash \
-  bash-completion2 \
-  fzf \
-  bat \
-  eza \
-  fd \
-  zoxide
-
-# Switch to using brew-installed bash as default shell
-if ! fgrep -q "${BREW_PREFIX}/bin/bash" /etc/shells; then
-  echo "${BREW_PREFIX}/bin/bash" | sudo tee -a /etc/shells
-  chsh -s "${BREW_PREFIX}/bin/bash"
+# Create symlink for sha256sum (idempotent)
+if [[ ! -L "${BREW_PREFIX}/bin/sha256sum" ]]; then
+  ln -sf "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
 fi
 
-# Install `wget` with IRI support.
+# Install GNU tools if enabled
+if [[ "${INSTALL_GNU_TOOLS:-true}" == true ]]; then
+  log_info "Installing GNU utilities..."
+  brew install moreutils findutils gnu-sed
+fi
+
+# Install Bash 4 and modern CLI tools
+if [[ "${INSTALL_MODERN_CLI:-true}" == true ]]; then
+  log_info "Installing modern CLI tools..."
+  brew install bash bash-completion2 fzf bat eza fd zoxide
+else
+  log_info "Skipping modern CLI tools (INSTALL_MODERN_CLI=false)"
+fi
+
+# Install wget with IRI support
 brew install wget
 
-# Install GnuPG to enable PGP-signing commits.
-brew install gnupg
+# Install GnuPG to enable PGP-signing commits
+if [[ "${INSTALL_GIT_TOOLS:-true}" == true ]]; then
+  log_info "Installing GnuPG for PGP-signing..."
+  brew install gnupg
+fi
 
-# Install more recent versions of some macOS tools.
-brew install vim
-brew install grep
-# Uncomment this for linux
-# brew install openssh
-brew install screen \
-  php \
-  gmp
+# Install more recent versions of some macOS tools
+log_info "Installing updated macOS tools..."
+brew install vim grep screen php gmp
 
-# Install font tools.
+# Install font tools
+log_info "Installing font tools..."
 brew tap bramstein/webfonttools
-brew install sfnt2woff \
-  sfnt2woff-zopfli \
-  woff2
+brew install sfnt2woff sfnt2woff-zopfli woff2 || log_warning "Some font tools failed to install"
 
-# Deskflow - https://github.com/deskflow/homebrew-tap
+# Install Deskflow
+log_info "Installing Deskflow..."
 brew tap deskflow/homebrew-tap
-brew install deskflow
+brew install deskflow || log_warning "Failed to install Deskflow"
 
-# Install some CTF tools; see https://github.com/ctfs/write-ups.
-ctfs=(
-  aircrack-ng
-  binutils
-  binwalk
-  cifer
-  dex2jar
-  dns2tcp
-  fcrackzip
-  foremost
-  hydra
-  john
-  knock
-  netpbm
-  nmap
-  pngcheck
-  socat
-  sqlmap
-  tcpflow
-  tcpreplay
-  ucspi-tcp # `tcpserver` etc.
-  xpdf
-  xz
-)
-for ctf in "${ctfs[@]}"; do brew install "$ctf"; done
+# Install CTF tools if enabled
+if [[ "${INSTALL_CTF_TOOLS:-false}" == true ]]; then
+  log_info "Installing CTF/security tools..."
 
-# Install other useful binaries.
-bins=(
-  python
-  # Terminal Recording
-  asciinema
-  agg
-  # Git
-  git
-  git-lfs
-  gh
-  git-delta
-  imagemagick
-  ack
-  lua
-  lynx
-  p7zip
-  pigz
-  pv
-  rename
-  rlwrap
-  ssh-copy-id
-  tree
-  vbindiff
-  htop
-  ansible
-  orbstack
-  asdf
-  gemini-cli
-)
-for bin in "${bins[@]}"; do brew install "$bin"; done
+  if [[ -n "${CTF_PACKAGES:-}" ]]; then
+    # Use packages from config if available
+    for package in "${CTF_PACKAGES[@]}"; do
+      log_info "Installing $package..."
+      brew install "$package" || log_warning "Failed to install $package"
+    done
+  else
+    # Fallback to hardcoded list if config not loaded
+    ctfs=(
+      aircrack-ng binutils binwalk cifer dex2jar dns2tcp
+      fcrackzip foremost hydra john knock netpbm nmap
+      pngcheck socat sqlmap tcpflow tcpreplay ucspi-tcp xpdf xz
+    )
+    for package in "${ctfs[@]}"; do
+      log_info "Installing $package..."
+      brew install "$package" || log_warning "Failed to install $package"
+    done
+  fi
+else
+  log_info "Skipping CTF tools (INSTALL_CTF_TOOLS=false)"
+fi
 
-brew install --cask
-brew install --cask font-0xproto-nerd-font
+# Install development tools if enabled
+if [[ "${INSTALL_DEV_TOOLS:-true}" == true ]]; then
+  log_info "Installing development tools..."
 
-# Install packages
-apps=(
-  firefox
-  firefox@nightly
-  # Fuck Google
-  # google-chrome
-  # google-chrome@canary
-  ungoogled-chromium
-  iterm2
-  keepingyouawake
-  keka
-  keycastr
-  macdown
-  slack
-  sourcetree
-  transmission
-  vagrant
-  virtualbox
-  # Fuck Microsoft
-  # visual-studio-code
-  vscodium
-  zed
-  zen
-  vlc
-  cron
-  raycast
-  datagrip
-  linear-linear
-  bitwarden
-  shottr
-  background-music
-  rectangle
-  PlayCover/playcover/playcover-community
-  # LLMs
-  claude-code
-  codex
-)
+  if [[ -n "${DEV_PACKAGES:-}" ]]; then
+    # Use packages from config
+    for package in "${DEV_PACKAGES[@]}"; do
+      log_info "Installing $package..."
+      brew install "$package" || log_warning "Failed to install $package"
+    done
+  else
+    # Fallback list
+    bins=(
+      python asciinema agg git git-lfs gh git-delta imagemagick
+      ack lua lynx p7zip pigz pv rename rlwrap ssh-copy-id
+      tree vbindiff htop ansible orbstack asdf
+    )
+    for package in "${bins[@]}"; do
+      log_info "Installing $package..."
+      brew install "$package" || log_warning "Failed to install $package"
+    done
+  fi
 
-for app in "${apps[@]}"; do brew install --cask --appdir="/Applications" "$app"; done
+  # Install terminal recording tools
+  if [[ -n "${TERMINAL_RECORDING:-}" ]]; then
+    for package in "${TERMINAL_RECORDING[@]}"; do
+      log_info "Installing $package..."
+      brew install "$package" || log_warning "Failed to install $package"
+    done
+  fi
+fi
 
-# Quick Look Plugins (https://github.com/sindresorhus/quick-look-plugins)
-# Sequoia and higher do not support legacy quick look plugins
-# https://developer.apple.com/documentation/macos-release-notes/macos-15-release-notes
-brew install suspicious-package apparency qlvideo
-# Glance - https://github.com/chamburr/glance - Quick Look
-# Replaces - qlcolorcode qlstephen qlmarkdown quicklook-json quicklookase
-brew install --no-quarantine glance-chamburr
+# Install Git tools if enabled
+if [[ "${INSTALL_GIT_TOOLS:-true}" == true ]]; then
+  log_info "Installing Git tools..."
+  if [[ -n "${GIT_PACKAGES:-}" ]]; then
+    for package in "${GIT_PACKAGES[@]}"; do
+      log_info "Installing $package..."
+      brew install "$package" || log_warning "Failed to install $package"
+    done
+  fi
+fi
 
-# Gemini install node as a dependency, but we already install node, so remove it
-brew uninstall --ignore-dependencies node
+# Install LLM applications if enabled
+if [[ "${INSTALL_LLM_APPS:-true}" == true ]]; then
+  log_info "Installing LLM applications..."
+  if [[ -n "${LLM_APPS:-}" ]]; then
+    for package in "${LLM_APPS[@]}"; do
+      log_info "Installing $package..."
+      brew install "$package" || log_warning "Failed to install $package"
+    done
+  else
+    brew install gemini-cli || log_warning "Failed to install gemini-cli"
+  fi
+fi
 
-# Remove outdated versions from the cellar.
+# Install Nerd Fonts
+log_info "Installing Nerd Fonts..."
+brew install --cask font-0xproto-nerd-font || log_warning "Failed to install Nerd Font"
+
+# Install GUI applications if enabled
+if [[ "${INSTALL_APPLICATIONS:-true}" == true ]]; then
+  log_info "Installing GUI applications..."
+
+  if [[ -n "${PRODUCTIVITY_APPS:-}" ]] || [[ -n "${DEV_APPS:-}" ]]; then
+    # Combine productivity and dev apps
+    all_apps=()
+    [[ -n "${PRODUCTIVITY_APPS:-}" ]] && all_apps+=("${PRODUCTIVITY_APPS[@]}")
+    [[ -n "${DEV_APPS:-}" ]] && all_apps+=("${DEV_APPS[@]}")
+
+    for app in "${all_apps[@]}"; do
+      log_info "Installing $app..."
+      brew install --cask --appdir="/Applications" "$app" || log_warning "Failed to install $app"
+    done
+  else
+    # Fallback to hardcoded list
+    apps=(
+      firefox firefox@nightly ungoogled-chromium iterm2 keepingyouawake
+      keka keycastr macdown slack sourcetree transmission vagrant
+      virtualbox vscodium zed zen vlc cron raycast datagrip
+      linear-linear bitwarden shottr background-music rectangle
+      PlayCover/playcover/playcover-community
+    )
+
+    for app in "${apps[@]}"; do
+      log_info "Installing $app..."
+      brew install --cask --appdir="/Applications" "$app" || log_warning "Failed to install $app"
+    done
+  fi
+
+  # Quick Look Plugins (macOS Sequoia compatible)
+  log_info "Installing Quick Look plugins..."
+  brew install suspicious-package apparency qlvideo || log_warning "Some Quick Look plugins failed"
+  brew install --no-quarantine glance-chamburr || log_warning "Failed to install Glance"
+else
+  log_info "Skipping GUI applications (INSTALL_APPLICATIONS=false)"
+fi
+
+# Cleanup: Gemini installs node as dependency, but we manage node via Volta
+if command_exists gemini && command_exists node; then
+  log_info "Removing Homebrew-installed node (managed by Volta)..."
+  brew uninstall --ignore-dependencies node 2>/dev/null || true
+fi
+
+# Remove outdated versions from the cellar
+log_info "Cleaning up old package versions..."
 brew cleanup
+
+log_success "Package installation complete!"
