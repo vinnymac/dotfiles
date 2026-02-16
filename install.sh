@@ -14,6 +14,7 @@ source "$DOTFILES_DIR/lib/error_handler.sh"
 source "$DOTFILES_DIR/lib/package_manager.sh"
 source "$DOTFILES_DIR/lib/interactive.sh"
 source "$DOTFILES_DIR/lib/shell_config.sh"
+source "$DOTFILES_DIR/lib/system_packages.sh"
 
 # Initialize logging
 init_logging
@@ -160,6 +161,65 @@ fi
 
 # Main installation function
 doInstallation() {
+  # Phase 1-5: Install system packages via native package manager (Linux only)
+  if [[ "$PLATFORM" == "linux" ]]; then
+    echo "========================================"
+    log_info "Installing system packages via $PACKAGE_MANAGER"
+    echo "========================================"
+    echo ""
+
+    # Phase 1: System prerequisites (critical)
+    log_info "[Phase 1/5] Installing system prerequisites..."
+    install_system_prerequisites "$DISTRO" "$PACKAGE_MANAGER" || {
+      log_error "Failed to install system prerequisites"
+      record_error "system_prereqs" "Failed to install system prerequisites"
+      return 1
+    }
+    echo ""
+
+    # Phase 2: Common utilities
+    log_info "[Phase 2/5] Installing common utilities..."
+    install_system_utilities "$DISTRO" "$PACKAGE_MANAGER" || {
+      log_warning "Some utilities failed to install (non-critical)"
+    }
+    echo ""
+
+    # Phase 3: GNU tools and system libraries
+    log_info "[Phase 3/5] Installing GNU tools and system libraries..."
+    install_gnu_tools_and_libs "$DISTRO" "$PACKAGE_MANAGER" || {
+      log_warning "Some GNU tools failed to install (non-critical)"
+    }
+    echo ""
+
+    # Phase 4: GUI applications (if enabled)
+    if [[ "${INSTALL_APPLICATIONS:-true}" == true ]]; then
+      log_info "[Phase 4/5] Installing GUI applications..."
+      install_gui_applications "$DISTRO" "$PACKAGE_MANAGER" || {
+        log_warning "Some GUI applications failed to install (non-critical)"
+      }
+      echo ""
+
+      # Phase 5: AUR packages (Arch only)
+      if [[ "$DISTRO" == "arch" ]]; then
+        log_info "[Phase 5/5] Installing AUR packages..."
+        install_aur_packages "$DISTRO" || {
+          log_warning "Some AUR packages failed to install (non-critical)"
+        }
+        echo ""
+      else
+        log_info "[Phase 5/5] Skipping AUR packages (not on Arch Linux)"
+        echo ""
+      fi
+    else
+      log_info "[Phase 4/5] Skipping GUI applications (INSTALL_APPLICATIONS=false)"
+      log_info "[Phase 5/5] Skipping AUR packages (INSTALL_APPLICATIONS=false)"
+      echo ""
+    fi
+
+    log_success "System package installation complete!"
+    echo ""
+  fi
+
   # Install package manager
   if [[ "$INSTALL_PACKAGE_MANAGER" == true ]]; then
     log_info "Setting up package manager..."

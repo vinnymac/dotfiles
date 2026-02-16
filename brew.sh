@@ -35,19 +35,25 @@ brew upgrade
 # Save Homebrew's installed location.
 BREW_PREFIX=$(brew --prefix)
 
-# Install GNU core utilities (those that come with macOS are outdated).
-log_info "Installing GNU core utilities..."
-brew install coreutils
+# Install GNU core utilities
+# On macOS: Install GNU versions (macOS has BSD versions)
+# On Linux: Skip (already have GNU versions from system)
+if [[ "$PLATFORM" == "darwin" ]]; then
+  log_info "Installing GNU core utilities (macOS needs these)..."
+  brew install coreutils
 
-# Create symlink for sha256sum (idempotent)
-if [[ ! -L "${BREW_PREFIX}/bin/sha256sum" ]]; then
-  ln -sf "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
-fi
+  # Create symlink for sha256sum (idempotent)
+  if [[ ! -L "${BREW_PREFIX}/bin/sha256sum" ]]; then
+    ln -sf "${BREW_PREFIX}/bin/gsha256sum" "${BREW_PREFIX}/bin/sha256sum"
+  fi
 
-# Install GNU tools if enabled
-if [[ "${INSTALL_GNU_TOOLS:-true}" == true ]]; then
-  log_info "Installing GNU utilities..."
-  brew install moreutils findutils gnu-sed
+  # Install GNU tools if enabled
+  if [[ "${INSTALL_GNU_TOOLS:-true}" == true ]]; then
+    log_info "Installing GNU utilities..."
+    brew install moreutils findutils gnu-sed
+  fi
+else
+  log_info "Skipping GNU tools on Linux (already installed via $PACKAGE_MANAGER)"
 fi
 
 # Install Bash 4 and modern CLI tools
@@ -68,18 +74,30 @@ if [[ "${INSTALL_GIT_TOOLS:-true}" == true ]]; then
 fi
 
 # Install more recent versions of some macOS tools
-log_info "Installing updated macOS tools..."
-brew install vim grep screen php gmp
+# On Linux, skip tools that come from system package manager
+if [[ "$PLATFORM" == "darwin" ]]; then
+  log_info "Installing updated macOS tools..."
+  brew install vim grep screen php gmp
+else
+  log_info "Installing development runtimes (PHP, etc.)..."
+  # On Linux, still install PHP, GMP via Homebrew for consistency
+  brew install php gmp
+  # vim, grep, screen already installed via pacman
+fi
 
 # Install font tools
 log_info "Installing font tools..."
 brew tap bramstein/webfonttools
 brew install sfnt2woff sfnt2woff-zopfli woff2 || log_warning "Some font tools failed to install"
 
-# Install Deskflow
-log_info "Installing Deskflow..."
-brew tap deskflow/homebrew-tap
-brew install deskflow || log_warning "Failed to install Deskflow"
+# Install Deskflow (optional KVM software - currently has broken cask)
+if [[ "${INSTALL_DESKFLOW:-false}" == true ]]; then
+  log_info "Installing Deskflow..."
+  brew tap deskflow/homebrew-tap
+  brew install deskflow || log_warning "Failed to install Deskflow"
+else
+  log_info "Skipping Deskflow (INSTALL_DESKFLOW=false)"
+fi
 
 # Install CTF tools if enabled
 if [[ "${INSTALL_CTF_TOOLS:-false}" == true ]]; then
@@ -119,11 +137,20 @@ if [[ "${INSTALL_DEV_TOOLS:-true}" == true ]]; then
     done
   else
     # Fallback list
-    bins=(
-      python asciinema agg git git-lfs gh git-delta imagemagick
-      ack lua lynx p7zip pigz pv rename rlwrap ssh-copy-id
-      tree vbindiff htop ansible orbstack asdf
-    )
+    if [[ "$PLATFORM" == "darwin" ]]; then
+      bins=(
+        python asciinema agg git git-lfs gh git-delta imagemagick
+        ack lua lynx p7zip pigz pv rename rlwrap ssh-copy-id
+        tree vbindiff htop ansible orbstack asdf
+      )
+    else
+      # Linux: skip system tools (tree, htop) and macOS-only (orbstack)
+      bins=(
+        python asciinema agg git git-lfs gh git-delta imagemagick
+        ack lua lynx p7zip pigz pv rename rlwrap ssh-copy-id
+        vbindiff ansible asdf
+      )
+    fi
     for package in "${bins[@]}"; do
       log_info "Installing $package..."
       brew install "$package" || log_warning "Failed to install $package"
@@ -167,40 +194,44 @@ fi
 log_info "Installing Nerd Fonts..."
 brew install --cask font-0xproto-nerd-font || log_warning "Failed to install Nerd Font"
 
-# Install GUI applications if enabled
+# Install GUI applications if enabled (macOS only)
 if [[ "${INSTALL_APPLICATIONS:-true}" == true ]]; then
-  log_info "Installing GUI applications..."
+  if [[ "$PLATFORM" == "darwin" ]]; then
+    log_info "Installing GUI applications..."
 
-  if [[ -n "${PRODUCTIVITY_APPS:-}" ]] || [[ -n "${DEV_APPS:-}" ]]; then
-    # Combine productivity and dev apps
-    all_apps=()
-    [[ -n "${PRODUCTIVITY_APPS:-}" ]] && all_apps+=("${PRODUCTIVITY_APPS[@]}")
-    [[ -n "${DEV_APPS:-}" ]] && all_apps+=("${DEV_APPS[@]}")
+    if [[ -n "${PRODUCTIVITY_APPS:-}" ]] || [[ -n "${DEV_APPS:-}" ]]; then
+      # Combine productivity and dev apps
+      all_apps=()
+      [[ -n "${PRODUCTIVITY_APPS:-}" ]] && all_apps+=("${PRODUCTIVITY_APPS[@]}")
+      [[ -n "${DEV_APPS:-}" ]] && all_apps+=("${DEV_APPS[@]}")
 
-    for app in "${all_apps[@]}"; do
-      log_info "Installing $app..."
-      brew install --cask --appdir="/Applications" "$app" || log_warning "Failed to install $app"
-    done
+      for app in "${all_apps[@]}"; do
+        log_info "Installing $app..."
+        brew install --cask --appdir="/Applications" "$app" || log_warning "Failed to install $app"
+      done
+    else
+      # Fallback to hardcoded list
+      apps=(
+        firefox firefox@nightly ungoogled-chromium iterm2 keepingyouawake
+        keka keycastr macdown slack sourcetree transmission vagrant
+        virtualbox vscodium zed zen vlc cron raycast datagrip
+        linear-linear bitwarden shottr background-music rectangle
+        PlayCover/playcover/playcover-community
+      )
+
+      for app in "${apps[@]}"; do
+        log_info "Installing $app..."
+        brew install --cask --appdir="/Applications" "$app" || log_warning "Failed to install $app"
+      done
+    fi
+
+    # Quick Look Plugins (macOS Sequoia compatible)
+    log_info "Installing Quick Look plugins..."
+    brew install suspicious-package apparency qlvideo || log_warning "Some Quick Look plugins failed"
+    brew install --no-quarantine glance-chamburr || log_warning "Failed to install Glance"
   else
-    # Fallback to hardcoded list
-    apps=(
-      firefox firefox@nightly ungoogled-chromium iterm2 keepingyouawake
-      keka keycastr macdown slack sourcetree transmission vagrant
-      virtualbox vscodium zed zen vlc cron raycast datagrip
-      linear-linear bitwarden shottr background-music rectangle
-      PlayCover/playcover/playcover-community
-    )
-
-    for app in "${apps[@]}"; do
-      log_info "Installing $app..."
-      brew install --cask --appdir="/Applications" "$app" || log_warning "Failed to install $app"
-    done
+    log_info "Skipping Homebrew GUI applications on Linux (handled by Phase 4 via $PACKAGE_MANAGER)"
   fi
-
-  # Quick Look Plugins (macOS Sequoia compatible)
-  log_info "Installing Quick Look plugins..."
-  brew install suspicious-package apparency qlvideo || log_warning "Some Quick Look plugins failed"
-  brew install --no-quarantine glance-chamburr || log_warning "Failed to install Glance"
 else
   log_info "Skipping GUI applications (INSTALL_APPLICATIONS=false)"
 fi
