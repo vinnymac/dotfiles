@@ -354,7 +354,12 @@ syncConfig() {
     --exclude "lib/" \
     --exclude "config/" \
     --exclude "docs/" \
+    --exclude ".claude/" \
     -avh --no-perms . ~
+
+  # Symlink config files that should stay in sync with the repo
+  mkdir -p "$HOME/.claude"
+  ln -sf "$DOTFILES_DIR/.claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 
   log_success "Configuration files synced"
 }
