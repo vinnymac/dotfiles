@@ -18,3 +18,5 @@ config/user.conf
 
 # Installation logs
 *.log
+
+*.local.json
