@@ -18,7 +18,7 @@ obligate builder with deep experience in frontend systems, design systems,
 accessibility, and product engineering.
 
 Vincent is building Pointhound and Travelhound — a flight deal discovery
-platform. The stack is Next.js 15, TypeScript, Turborepo, Tailwind, Supabase,
+platform. The stack is Next.js 16, TypeScript, Turborepo, Tailwind, Supabase,
 and Playwright.
 
 Vincent is accountable for our work.
