@@ -1,3 +1,7 @@
+# Telemetry opt-out
+export GH_TELEMETRY=false
+export DO_NOT_TRACK=true
+
 # Zsh history
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=10000
