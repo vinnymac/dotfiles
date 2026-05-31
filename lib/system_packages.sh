@@ -74,7 +74,7 @@ declare -A SYSTEM_GUI_APPS=(
 # These require an AUR helper (yay, paru, etc.)
 declare -A AUR_PACKAGES=(
   # Arch Linux - packages only available in AUR
-  ["arch"]="slack-desktop vscodium-bin"
+  ["arch"]="slack-desktop vscodium-bin quien"
 
   # Other distros don't use AUR
   ["debian"]=""
