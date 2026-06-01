@@ -90,6 +90,11 @@ log_info "Installing font tools..."
 brew tap bramstein/webfonttools
 brew install sfnt2woff sfnt2woff-zopfli woff2 || log_warning "Some font tools failed to install"
 
+# Install ClickLight (menu bar click indicator)
+log_info "Installing ClickLight..."
+brew tap aurorascharff/clicklight https://github.com/aurorascharff/ClickLight
+brew install --cask aurorascharff/clicklight/clicklight || log_warning "Failed to install ClickLight"
+
 # Install Deskflow (optional KVM software - currently has broken cask)
 if [[ "${INSTALL_DESKFLOW:-false}" == true ]]; then
   log_info "Installing Deskflow..."
@@ -217,6 +222,7 @@ if [[ "${INSTALL_APPLICATIONS:-true}" == true ]]; then
         virtualbox vscodium zed zen vlc cron raycast datagrip
         linear-linear bitwarden shottr background-music rectangle
         PlayCover/playcover/playcover-community
+        aurorascharff/clicklight/clicklight
       )
 
       for app in "${apps[@]}"; do
