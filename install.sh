@@ -92,6 +92,8 @@ echo ""
 # Load configuration
 if [[ -n "$CONFIG_FILE" ]]; then
   if [[ -f "$CONFIG_FILE" ]]; then
+    log_info "Loading default configuration..."
+    source "$DOTFILES_DIR/config/default.conf"
     log_info "Loading configuration from: $CONFIG_FILE"
     source "$CONFIG_FILE"
   else
@@ -233,8 +235,12 @@ doInstallation() {
 
   # Install packages via brew.sh or equivalent
   if [[ "$INSTALL_DEV_TOOLS" == true || "$INSTALL_APPLICATIONS" == true ]]; then
-    log_info "Installing packages..."
-    /bin/bash "$DOTFILES_DIR/brew.sh" || record_error "brew" "Package installation had errors"
+    if [[ "$PLATFORM" == "darwin" ]] || command_exists brew; then
+      log_info "Installing packages..."
+      /bin/bash "$DOTFILES_DIR/brew.sh" || record_error "brew" "Package installation had errors"
+    else
+      log_warning "Skipping Homebrew packages (Linux without Homebrew)"
+    fi
   fi
 
   # Setup asdf version manager
@@ -377,8 +383,8 @@ doInstallation
 echo ""
 show_error_summary
 
-# Cleanup if successful
-if [[ ${#INSTALLATION_ERRORS[@]} -eq 0 ]]; then
+# Cleanup if successful (skip interactive prompt in force/CI mode)
+if [[ ${#INSTALLATION_ERRORS[@]} -eq 0 && "$FORCE_MODE" == false ]]; then
   cleanup_log
 fi
 

@@ -1,0 +1,30 @@
+name: Dotfiles Installation
+
+on:
+  push:
+  schedule:
+    - cron: "0 0 1,15 * *" # 1st and 15th of every month (biweekly)
+
+jobs:
+  install:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Clean up installed software
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          brew uninstall --ignore-dependencies --force $(brew list --formula) || true
+          brew uninstall --cask --force $(brew list --cask) || true
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
+
+      - name: Clone this repository
+        uses: actions/checkout@v4
+
+      - name: Install using Makefile
+        run: make ci
+
+      - name: Verify shell config
+        run: source $HOME/.bash_profile
