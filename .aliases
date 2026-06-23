@@ -137,6 +137,7 @@ if [[ -z "$CLAUDECODE" ]] && [[ -z "$CURSOR_EDITOR" ]] && [[ -z "$GITHUB_COPILOT
     if [ -n "$SSH_CONNECTION" ] && [ -z "$KEYCHAIN_UNLOCKED" ]; then
       security unlock-keychain ~/Library/Keychains/login.keychain-db
       export KEYCHAIN_UNLOCKED=true
+      tmux set-environment -g KEYCHAIN_UNLOCKED true 2>/dev/null || true
     fi
     command claude "$@"
     printf '\e[?2004l'
