@@ -143,4 +143,64 @@ if [[ -z "$CLAUDECODE" ]] && [[ -z "$CURSOR_EDITOR" ]] && [[ -z "$GITHUB_COPILOT
     command claude "$@"
     printf '\e[?2004l'
   }
+
+  # Show the latest assistant-response tail from recent Claude Code sessions.
+  claude-recent() {
+    node <<'NODE'
+const fs = require("node:fs");
+const path = require("node:path");
+
+const roots = [
+  path.join(process.env.HOME, ".claude/projects"),
+  path.join(process.env.HOME, ".ccs/instances"),
+];
+
+function conversationFiles(directory) {
+  if (!fs.existsSync(directory)) return [];
+
+  return fs.readdirSync(directory, { recursive: true })
+    .map((entry) => path.join(directory, entry))
+    .filter((file) => file.endsWith(".jsonl") && !file.includes("/subagents/"));
+}
+
+function messageText(content) {
+  if (typeof content === "string") return content;
+  if (!Array.isArray(content)) return "";
+
+  return content
+    .filter((part) => part.type === "text")
+    .map((part) => part.text)
+    .join("\n");
+}
+
+const conversations = roots
+  .flatMap(conversationFiles)
+  .map((file) => ({ file, stat: fs.statSync(file) }))
+  .sort((a, b) => b.stat.mtimeMs - a.stat.mtimeMs)
+  .slice(0, 3);
+
+for (const { file, stat } of conversations) {
+  const responses = fs.readFileSync(file, "utf8").trim().split("\n")
+    .flatMap((line) => {
+      try {
+        return [JSON.parse(line)];
+      } catch {
+        return [];
+      }
+    })
+    .filter((entry) => entry.type === "assistant")
+    .map((entry) => messageText(entry.message?.content ?? entry.content))
+    .filter(Boolean);
+
+  const lines = (responses.at(-1) ?? "(No assistant response recorded)")
+    .split("\n")
+    .filter((line) => line.trim())
+    .slice(-5)
+    .map((line) => line.replace(/\s+/g, " ").trim().slice(0, 180));
+
+  console.log(`\n${new Date(stat.mtimeMs).toLocaleString()}  ${file}`);
+  console.log(lines.map((line) => `  ${line}`).join("\n"));
+}
+NODE
+  }
 fi

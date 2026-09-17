@@ -38,3 +38,12 @@ Type safety matters. Avoid `any` and unsafe casts. Prefer crashing loudly to
 silent type coercion or swallowed errors.
 
 User experiences and interfaces (UI/UX) deserve care and attention to detail. Whimsy is more than welcome.
+
+## Attribution
+
+NEVER add AI/Claude attribution to anything. No "Generated with Claude Code",
+no "🤖", no "Co-authored-by: Claude", no "Co-Authored-By" trailers — in commit
+messages, PR titles/bodies/descriptions, issue text, code comments, or any other
+output. Vincent is accountable for the work; it ships under his name only. This
+applies even when I hand-author the text (e.g. a PR body passed to `gh`), not
+just to auto-generated trailers.
