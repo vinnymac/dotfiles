@@ -87,6 +87,6 @@ fi
 [[ -d "/usr/local/sbin" ]] && export PATH="/usr/local/sbin:$PATH"
 
 # Activate mise after other PATH changes.
-if command -v mise >/dev/null 2>&1; then
+if command -v mise >/dev/null 2>&1 && [[ ! -x "${VOLTA_HOME:-$HOME/.volta}/bin/node" ]]; then
   eval "$(mise activate zsh)"
 fi

@@ -320,10 +320,17 @@ installMise() {
   fi
 
   log_info "Installing the default Node.js and Yarn versions with mise..."
-  mise use --global node@22.19.0 yarn@4 || return 1
+  mise use --global node@26.13.0 yarn@4 || return 1
   mise reshim || return 1
   export PATH="$HOME/.local/share/mise/shims:$PATH"
-  log_success "Node.js $(node --version), Yarn $(yarn --version) installed"
+  # Preserve Volta project pins and existing global tools while both managers coexist.
+  local volta_dir="${VOLTA_HOME:-$HOME/.volta}/bin"
+  if [[ -x "$volta_dir/node" ]]; then
+    export PATH="$volta_dir:$PATH"
+    if command_exists volta; then volta install node@26.13.0 || return 1; fi
+    log_info "Volta remains first on PATH for existing projects; use mise exec -- in mise-managed projects."
+  fi
+  log_success "Default Node.js and Yarn installed with mise"
 }
 
 syncConfig() {
