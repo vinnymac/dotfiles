@@ -327,7 +327,11 @@ installMise() {
   local volta_dir="${VOLTA_HOME:-$HOME/.volta}/bin"
   if [[ -x "$volta_dir/node" ]]; then
     export PATH="$volta_dir:$PATH"
-    if command_exists volta; then volta install node@26.13.0 || return 1; fi
+    if command_exists volta; then
+      volta install node@26.13.0 || return 1
+    else
+      log_warning "Volta's Node shim exists, but the volta command is unavailable; its default was not changed."
+    fi
     log_info "Volta remains first on PATH for existing projects; use mise exec -- in mise-managed projects."
   fi
   log_success "Default Node.js and Yarn installed with mise"
