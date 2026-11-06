@@ -1,21 +1,7 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-# Globally installable packages
-# packages = (
-#   eslint
-#   serverless
-#   maildev
-#   wifi-password-cli
-#   gh-pages
-# )
-# npm install -g "${packages[@]}"
-
-# Install Latest Node 22
-volta install node@22
-# Install Latest Yarn 4
-volta install yarn@4
-
-# check for npm, if it is missing, install nodejs
-npm --version
-node --version
-yarn --version
+mise use --global node@22.19.0 yarn@4
+mise reshim
+mise exec -- node --version
+mise exec -- yarn --version

@@ -68,7 +68,7 @@ The `config/user.conf` file is gitignored for personal preferences.
 ### Optional Components
 
 - GUI Applications: Firefox, VSCodium, Zed, Bitwarden, Slack
-- Node.js Tools: Volta, Node 22, Yarn 4
+- Node.js Tools: mise, Node 22, Yarn 4
 - AWS CLI
 - CTF/Security Tools: nmap, john, hydra, aircrack-ng
 - LLM Applications: Claude Code, Codex, Gemini CLI

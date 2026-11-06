@@ -12,8 +12,5 @@ if [[ -n "$ZSH_VERSION" ]]; then
   setopt SHARE_HISTORY
 fi
 
-# Volta (Node.js version manager)
-if [[ -d "$HOME/.volta" ]]; then
-  export VOLTA_HOME="$HOME/.volta"
-  export PATH="$VOLTA_HOME/bin:$PATH"
-fi
+# mise shims resolve project tools in non-interactive child processes.
+export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH"

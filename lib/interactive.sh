@@ -65,7 +65,7 @@ select_components() {
   ask_yes_no "Install GUI applications (browsers, editors, etc.)?" "y" && \
     INSTALL_APPLICATIONS=true || INSTALL_APPLICATIONS=false
 
-  ask_yes_no "Install Node.js tools (via Volta)?" "y" && \
+  ask_yes_no "Install Node.js tools (via mise)?" "y" && \
     INSTALL_NODE_TOOLS=true || INSTALL_NODE_TOOLS=false
 
   ask_yes_no "Install AWS CLI?" "n" && \

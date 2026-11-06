@@ -134,7 +134,7 @@ if [[ "$DRY_RUN" == true ]]; then
   [[ "$INSTALL_DEV_TOOLS" == true ]] && echo "  ✓ Development Tools"
   [[ "$INSTALL_MODERN_CLI" == true ]] && echo "  ✓ Modern CLI Tools (fzf, bat, eza, etc.)"
   [[ "$INSTALL_APPLICATIONS" == true ]] && echo "  ✓ GUI Applications"
-  [[ "$INSTALL_NODE_TOOLS" == true ]] && echo "  ✓ Node.js Tools (Volta)"
+  [[ "$INSTALL_NODE_TOOLS" == true ]] && echo "  ✓ Node.js Tools (mise)"
   [[ "$INSTALL_AWS_CLI" == true ]] && echo "  ✓ AWS CLI"
   [[ "$INSTALL_CTF_TOOLS" == true ]] && echo "  ✓ CTF/Security Tools"
   [[ "$INSTALL_LLM_APPS" == true ]] && echo "  ✓ LLM Applications"
@@ -242,9 +242,9 @@ doInstallation() {
     setupAsdf || record_error "asdf" "Failed to setup asdf"
   fi
 
-  # Install Volta for Node.js
+  # Install mise for Node.js
   if [[ "$INSTALL_NODE_TOOLS" == true ]]; then
-    installVolta || record_error "volta" "Failed to install Volta/Node.js"
+    installMise || record_error "mise" "Failed to install mise/Node.js"
   fi
 
   # Install AWS CLI
@@ -308,31 +308,22 @@ setupAsdf() {
   log_success "asdf setup complete"
 }
 
-installVolta() {
-  if ! command_exists volta; then
-    log_info "Installing Volta..."
+installMise() {
+  if ! command_exists mise; then
+    log_info "Installing mise..."
     if command_exists brew; then
-      brew install volta
+      brew install mise || return 1
     else
-      curl https://get.volta.sh | bash
+      curl -fsSL https://mise.run | sh || return 1
+      export PATH="$HOME/.local/bin:$PATH"
     fi
   fi
 
-  # Setup volta (this adds it to PATH)
-  export VOLTA_HOME="$HOME/.volta"
-  export PATH="$VOLTA_HOME/bin:$PATH"
-
-  log_info "Installing Node.js via Volta..."
-  volta install node@22 || log_warning "Failed to install Node.js 22"
-  volta install yarn@4 || log_warning "Failed to install Yarn 4"
-
-  # Verify installation
-  if command_exists node; then
-    log_success "Node.js $(node --version) installed"
-  fi
-  if command_exists yarn; then
-    log_success "Yarn $(yarn --version) installed"
-  fi
+  log_info "Installing the default Node.js and Yarn versions with mise..."
+  mise use --global node@22.19.0 yarn@4 || return 1
+  mise reshim || return 1
+  export PATH="$HOME/.local/share/mise/shims:$PATH"
+  log_success "Node.js $(node --version), Yarn $(yarn --version) installed"
 }
 
 syncConfig() {
