@@ -85,3 +85,8 @@ fi
 # Additional PATH configurations (only if they exist)
 [[ -d "/usr/local/opt/openssl/bin" ]] && export PATH="/usr/local/opt/openssl/bin:$PATH"
 [[ -d "/usr/local/sbin" ]] && export PATH="/usr/local/sbin:$PATH"
+
+# Activate mise after other PATH changes.
+if command -v mise >/dev/null 2>&1 && [[ ! -x "${VOLTA_HOME:-$HOME/.volta}/bin/node" ]]; then
+  eval "$(mise activate zsh)"
+fi

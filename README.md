@@ -68,10 +68,17 @@ The `config/user.conf` file is gitignored for personal preferences.
 ### Optional Components
 
 - GUI Applications: Firefox, VSCodium, Zed, Bitwarden, Slack
-- Node.js Tools: Volta, Node 22, Yarn 4
+- Node.js Tools: mise, Node 26, Yarn 4
 - AWS CLI
 - CTF/Security Tools: nmap, john, hydra, aircrack-ng
 - LLM Applications: Claude Code, Codex, Gemini CLI
+
+Node defaults to 26.13.0. When Volta is already installed, its shims remain first
+on PATH so existing Volta-pinned projects and global tools continue to work. For
+a project managed by mise, use `mise exec -- node ...` or `mise exec -- yarn ...`
+during the transition. Restart agents launched through Volta after changing shell
+configuration; those processes can inherit an older toolchain. Once all projects
+have migrated, remove Volta's shell configuration to use mise activation globally.
 
 ### macOS-Specific
 

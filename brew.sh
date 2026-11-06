@@ -242,10 +242,10 @@ else
   log_info "Skipping GUI applications (INSTALL_APPLICATIONS=false)"
 fi
 
-# Cleanup: Gemini installs node as dependency, but we manage node via Volta
+# Keep Homebrew Node unlinked when another tool needs it as a dependency.
 if command_exists gemini && command_exists node; then
-  log_info "Removing Homebrew-installed node (managed by Volta)..."
-  brew uninstall --ignore-dependencies node 2>/dev/null || true
+  log_info "Unlinking Homebrew Node (managed by mise)..."
+  brew unlink node 2>/dev/null || true
 fi
 
 # Remove outdated versions from the cellar

@@ -12,8 +12,9 @@ if [[ -n "$ZSH_VERSION" ]]; then
   setopt SHARE_HISTORY
 fi
 
-# Volta (Node.js version manager)
-if [[ -d "$HOME/.volta" ]]; then
-  export VOLTA_HOME="$HOME/.volta"
+# Keep existing Volta project pins and installed tools working during migration.
+export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH"
+if [[ -x "${VOLTA_HOME:-$HOME/.volta}/bin/node" ]]; then
+  export VOLTA_HOME="${VOLTA_HOME:-$HOME/.volta}"
   export PATH="$VOLTA_HOME/bin:$PATH"
 fi

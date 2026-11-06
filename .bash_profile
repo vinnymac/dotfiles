@@ -77,3 +77,8 @@ export PATH="$(brew --prefix python)/libexec/bin:$PATH"
 
 # Silence macOS Deprecation Warning for default shell
 export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# Activate mise after other PATH changes.
+if command -v mise >/dev/null 2>&1 && [[ ! -x "${VOLTA_HOME:-$HOME/.volta}/bin/node" ]]; then
+  eval "$(mise activate bash)"
+fi
